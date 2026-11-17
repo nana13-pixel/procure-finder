@@ -12,335 +12,1104 @@
 
   <meta name="theme-color" content="#7965d8">
 
-  <title>PROCURE FINDER</title>
+  <meta name="description" content="PROCURE FINDER - Client Acquisition System">
 
-  <style>
+  <title>PROCURE FINDER — Client Acquisition System</title>
 
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+  <link rel="stylesheet" href="style.css">
 
-    body {
-
-      font-family: Arial, sans-serif;
-
-      background: #f6f4fc;
-
-      color: #29243d;
-
-    }
-
-    .layout { display: flex; min-height: 100vh; }
-
-    aside {
-
-      width: 235px;
-
-      background: white;
-
-      padding: 25px 17px;
-
-      border-right: 1px solid #eeeaf6;
-
-    }
-
-    .brand { font-size: 21px; font-weight: 800; color: #7965d8; }
-
-    .tagline { font-size: 10px; color: #999; margin: 7px 0 35px; letter-spacing: 1px; }
-
-    .menu-label { font-size: 10px; color: #aaa; margin: 22px 10px 10px; }
-
-    .menu {
-
-      display: block; padding: 12px; margin: 5px 0;
-
-      color: #777; text-decoration: none; border-radius: 10px;
-
-      font-size: 13px;
-
-    }
-
-    .menu.active { background: #eeeaff; color: #725bd2; font-weight: bold; }
-
-    main { flex: 1; padding: 30px; min-width: 0; }
-
-    .top { display: flex; justify-content: space-between; align-items: center; gap: 15px; }
-
-    h1 { font-size: 25px; }
-
-    .muted { color: #999; font-size: 13px; margin-top: 7px; }
-
-    .profile {
-
-      background: white; border-radius: 30px; padding: 10px 16px;
-
-      color: #7965d8; font-size: 12px;
-
-    }
-
-    .hero {
-
-      margin-top: 27px; padding: 25px; border-radius: 18px;
-
-      background: linear-gradient(110deg,#e9e3ff,#f9efff);
-
-      display: flex; justify-content: space-between; align-items: center;
-
-      gap: 15px; min-height: 150px;
-
-    }
-
-    .hero h2 { font-size: 22px; margin-bottom: 9px; }
-
-    .hero p { color: #777; font-size: 13px; line-height: 1.6; }
-
-    .hero-icon { font-size: 55px; }
-
-    .section-title { margin: 28px 0 15px; font-size: 16px; }
-
-    .stats { display: grid; grid-template-columns: repeat(4,1fr); gap: 14px; }
-
-    .card {
-
-      background: white; padding: 19px; border-radius: 15px;
-
-      border: 1px solid #f0edf7;
-
-    }
-
-    .card small { color: #999; font-size: 11px; }
-
-    .number { font-size: 25px; font-weight: bold; margin-top: 12px; }
-
-    .purple { color: #7965d8; }
-
-    .pink { color: #e47ba8; }
-
-    .blue { color: #5598d7; }
-
-    .green { color: #4aaf91; }
-
-    .content-grid { display: grid; grid-template-columns: 1.5fr 1fr; gap: 15px; }
-
-    .empty { color: #aaa; font-size: 13px; padding: 25px 0; text-align: center; }
-
-    .footer { margin-top: 30px; color: #aaa; font-size: 11px; text-align: center; }
-
-    @media(max-width:750px) {
-
-      aside { width: 70px; padding: 20px 8px; }
-
-      .brand { font-size: 12px; text-align: center; }
-
-      .tagline, .menu-label { display: none; }
-
-      .menu { font-size: 0; text-align: center; padding: 14px 3px; }
-
-      .menu::first-letter { font-size: 17px; }
-
-      main { padding: 19px 13px; }
-
-      .stats { grid-template-columns: repeat(2,1fr); gap: 9px; }
-
-      .content-grid { grid-template-columns: 1fr; }
-
-      h1 { font-size: 19px; }
-
-      .hero h2 { font-size: 18px; }
-
-    }
-
-  </style>
+  <script type="module" src="app.js"></script>
 
 </head>
 
 <body>
 
-<div class="layout">
+  <!-- LOADING -->
 
-  <aside>
+  <div id="loadingScreen" class="loading-screen">
 
-    <div class="brand">PROCURE.</div>
+    <div class="loading-mark">P.</div>
 
-    <div class="tagline">CLIENT ACQUISITION SYSTEM</div>
+    <p>Menyiapkan PROCURE FINDER...</p>
 
-    <div class="menu-label">MAIN MENU</div>
+  </div>
 
-    <a class="menu active" href="#">▦ Dashboard</a>
+  <!-- APPLICATION -->
 
-    <a class="menu" href="#">⌕ Client Finder</a>
+  <div class="app-shell" id="appShell" hidden>
 
-    <a class="menu" href="#">▤ Lead Database</a>
+    <!-- SIDEBAR -->
 
-    <a class="menu" href="#">◈ Procurement Needs</a>
+    <aside class="sidebar" id="sidebar">
 
-    <div class="menu-label">MANAGEMENT</div>
+      <a href="#dashboard" class="brand">
 
-    <a class="menu" href="#">♧ Partner Management</a>
+        <span class="brand-mark">P.</span>
 
-    <a class="menu" href="#">⇄ Deal & PO</a>
+        <span class="brand-name">
 
-    <a class="menu" href="#">◎ Fee Tracker</a>
+          <strong>PROCURE</strong>
 
-    <a class="menu" href="#">▧ Reports</a>
+          <small>FINDER</small>
 
-  </aside>
+        </span>
 
-  <main>
+      </a>
 
-    <div class="top">
+      <p class="sidebar-caption">CLIENT ACQUISITION SYSTEM</p>
 
-      <div>
+      <div class="nav-label">MAIN MENU</div>
 
-        <h1>Dashboard Overview</h1>
-<a class="menu" href="#client-finder">
+      <nav class="navigation">
 
-  🔎 Client Finder
+        <a href="#dashboard" class="nav-link active" data-page="dashboard">
 
-</a>
-        <p class="muted">Welcome back! Let's find new opportunities.</p>
+          <span class="nav-icon">▦</span>
+
+          <span>Dashboard Overview</span>
+
+        </a>
+
+        <a href="#client-finder" class="nav-link" data-page="client-finder">
+
+          <span class="nav-icon">⌕</span>
+
+          <span>Client Finder</span>
+
+        </a>
+
+        <a href="#lead-database" class="nav-link" data-page="lead-database">
+
+          <span class="nav-icon">▤</span>
+
+          <span>Lead Database</span>
+
+        </a>
+
+        <a href="#procurement-needs" class="nav-link" data-page="procurement-needs">
+
+          <span class="nav-icon">◈</span>
+
+          <span>Procurement Needs</span>
+
+        </a>
+
+      </nav>
+
+      <div class="nav-label">MANAGEMENT</div>
+
+      <nav class="navigation">
+
+        <a href="#partner-management" class="nav-link" data-page="partner-management">
+
+          <span class="nav-icon">♧</span>
+
+          <span>Partner Management</span>
+
+        </a>
+
+        <a href="#deal-po" class="nav-link" data-page="deal-po">
+
+          <span class="nav-icon">⇄</span>
+
+          <span>Deal &amp; PO</span>
+
+        </a>
+
+        <a href="#fee-tracker" class="nav-link" data-page="fee-tracker">
+
+          <span class="nav-icon">◎</span>
+
+          <span>Fee Tracker</span>
+
+        </a>
+
+        <a href="#reports" class="nav-link" data-page="reports">
+
+          <span class="nav-icon">▧</span>
+
+          <span>Reports</span>
+
+        </a>
+
+      </nav>
+
+      <div class="sidebar-bottom">
+
+        <div class="sidebar-tip">
+
+          <span class="tip-icon">✦</span>
+
+          <strong>Find Opportunities.</strong>
+
+          <p>Build connections and grow your network.</p>
+
+        </div>
+
+        <button type="button" class="logout-button" id="logoutButton">
+
+          <span>↪</span>
+
+          Logout
+
+        </button>
 
       </div>
 
-      <button id="logoutButton" class="profile" style="border:0;cursor:pointer">
+    </aside>
 
-  ● Administrator &nbsp; | &nbsp; Logout
+    <!-- MAIN CONTENT -->
 
-</button>
+    <main class="main-content">
 
-    </div>
+      <!-- TOPBAR -->
 
-    <section class="hero">
+      <header class="topbar">
 
-      <div>
+        <div class="topbar-left">
 
-        <h2>Find Your Next Opportunity!</h2>
+          <button type="button" class="mobile-menu-button" id="mobileMenuButton">
 
-        <p>Discover potential clients, build connections,<br>and turn opportunities into successful projects.</p>
+            ☰
 
-      </div>
+          </button>
 
-      <div class="hero-icon">🔎</div>
+          <div>
 
-    </section>
+            <p class="eyebrow">
 
-    <h3 class="section-title">Business Overview</h3>
+              WORKSPACE / <span id="breadcrumb">OVERVIEW</span>
 
-    <section class="stats">
+            </p>
 
-      <div class="card"><small>Total Leads</small><div class="number purple">0</div></div>
+            <h1 id="pageTitle">Dashboard Overview</h1>
 
-      <div class="card"><small>Active Prospects</small><div class="number pink">0</div></div>
+          </div>
 
-      <div class="card"><small>Successful PO</small><div class="number blue">0</div></div>
+        </div>
 
-      <div class="card"><small>Total Fee</small><div class="number green">Rp0</div></div>
+        <div class="topbar-user">
 
-    </section>
+          <div class="avatar">A</div>
 
-    <h3 class="section-title">Activity Overview</h3>
+          <div class="user-info">
 
-    <section class="content-grid">
+            <strong>Administrator</strong>
 
-      <div class="card">
+            <small>Personal Workspace</small>
 
-        <b>Recent Leads</b>
+          </div>
 
-        <div class="empty">Belum ada data calon klien.</div>
+        </div>
 
-      </div>
+      </header>
 
-      <div class="card">
+      <!-- ================= DASHBOARD ================= -->
 
-        <b>Pipeline Progress</b>
+      <section class="page-section active" id="page-dashboard">
 
-        <div class="empty">Belum ada aktivitas.</div>
+        <div class="welcome-banner">
 
-      </div>
+          <div class="banner-content">
 
-    </section>
+            <span class="banner-kicker">YOUR OPPORTUNITY SPACE</span>
 
-    <div class="footer">PROCURE FINDER © 2026 · Find Opportunities. Build Connections.</div>
+            <h2>Find Your Next Opportunity!</h2>
 
-  </main>
+            <p>
 
-</div>
+              Discover potential clients, build connections,
 
-</body>
+              and turn opportunities into successful projects.
 
-</html>
+            </p>
 
+            <a href="#client-finder"
 
-<script type="module">
+               class="primary-button banner-button"
 
-  import { createClient } from
+               data-go="client-finder">
 
-    'https://esm.sh/@supabase/supabase-js@2';
+              Start Finding Clients <span>→</span>
 
-  const supabase = createClient(
+            </a>
 
-    'https://inskhhkztoganifgbhrt.supabase.co',
+          </div>
 
-    'sb_publishable_Aa6oBTaQZGKLs8SZw9m-Lw_RhRXSkoU'
+          <div class="banner-art">⌕</div>
 
-  );
+          <div class="banner-orb orb-one"></div>
 
-  const { data, error } = await supabase.auth.getSession();
+          <div class="banner-orb orb-two"></div>
 
-  if (error || !data.session) {
+        </div>
 
-    window.location.replace('/login.html');
+        <div class="section-heading">
 
-  }
+          <div>
 
-</script>
+            <h2>Business Overview</h2>
 
+            <p>Ringkasan aktivitas akuisisi klien.</p>
 
-<script type="module">
+          </div>
 
-  import { createClient } from
+          <span class="date-chip" id="todayLabel">Hari ini</span>
 
-    'https://esm.sh/@supabase/supabase-js@2';
+        </div>
 
-  const supabase = createClient(
+        <div class="stats-grid">
 
-    'https://inskhhkztoganifgbhrt.supabase.co',
+          <article class="stat-card">
 
-    'sb_publishable_Aa6oBTaQZGKLs8SZw9m-Lw_RhRXSkoU'
+            <div class="stat-top">
 
-  );
+              <span>Total Leads</span>
 
-  document.getElementById('logoutButton')
+              <span class="stat-icon lavender">▤</span>
 
-    .addEventListener('click', async () => {
+            </div>
 
-      const button = document.getElementById('logoutButton');
+            <strong id="totalLeads">0</strong>
 
-      button.disabled = true;
+            <small>Seluruh calon klien tersimpan</small>
 
-      button.textContent = 'Logging out...';
+          </article>
 
-      const { error } = await supabase.auth.signOut();
+          <article class="stat-card">
 
-      if (error) {
+            <div class="stat-top">
 
-        alert('Logout gagal: ' + error.message);
+              <span>Active Prospects</span>
 
-        button.disabled = false;
+              <span class="stat-icon pink">✦</span>
 
-        button.textContent = '● Administrator | Logout';
+            </div>
 
-        return;
+            <strong id="activeLeads">0</strong>
 
-      }
+            <small>Lead yang masih ditindaklanjuti</small>
 
-      window.location.replace('/login.html');
+          </article>
 
-    });
+          <article class="stat-card">
 
-</script>
+            <div class="stat-top">
 
-</body>
+              <span>Successful PO</span>
 
-</html>
+              <span class="stat-icon blue">↗</span>
+
+            </div>
+
+            <strong id="poCount">0</strong>
+
+            <small>Proyek berhasil</small>
+
+          </article>
+
+          <article class="stat-card">
+
+            <div class="stat-top">
+
+              <span>Total Fee</span>
+
+              <span class="stat-icon green">◎</span>
+
+            </div>
+
+            <strong id="totalFee">Rp0</strong>
+
+            <small>Fee yang sudah tercatat dibayar</small>
+
+          </article>
+
+        </div>
+
+        <div class="dashboard-grid">
+
+          <article class="panel">
+
+            <div class="panel-heading">
+
+              <div>
+
+                <h3>Recent Leads</h3>
+
+                <p>Calon klien yang terakhir ditambahkan.</p>
+
+              </div>
+
+              <a href="#lead-database" data-go="lead-database">
+
+                Lihat semua →
+
+              </a>
+
+            </div>
+
+            <div id="recentLeads" class="empty-state">
+
+              <span>▤</span>
+
+              <strong>Belum ada data calon klien</strong>
+
+              <p>Mulai tambahkan calon klien melalui Client Finder.</p>
+
+            </div>
+
+          </article>
+
+          <article class="panel">
+
+            <div class="panel-heading">
+
+              <div>
+
+                <h3>Pipeline Progress</h3>
+
+                <p>Status tindak lanjut lead.</p>
+
+              </div>
+
+            </div>
+
+            <div id="pipelineSummary" class="pipeline-list">
+
+              <p class="muted">Memuat ringkasan...</p>
+
+            </div>
+
+          </article>
+
+        </div>
+
+      </section>
+
+      <!-- ================= CLIENT FINDER ================= -->
+
+      <section class="page-section" id="page-client-finder">
+
+        <div class="page-intro">
+
+          <div>
+
+            <span class="eyebrow">DISCOVERY TOOLS</span>
+
+            <h2>Client Finder</h2>
+
+            <p>
+
+              Temukan organisasi yang berpotensi membutuhkan
+
+              pengadaan barang atau jasa.
+
+            </p>
+
+          </div>
+
+          <span class="soft-pill">LEAD DISCOVERY</span>
+
+        </div>
+
+        <div class="finder-layout">
+
+          <article class="panel finder-panel">
+
+            <div class="panel-heading">
+
+              <div>
+
+                <h3>Search Potential Clients</h3>
+
+                <p>Cari referensi calon klien melalui pencarian web.</p>
+
+              </div>
+
+              <span class="panel-icon">⌕</span>
+
+            </div>
+
+            <form id="webSearchForm" class="search-form">
+
+              <label for="webSearchInput">Kata kunci pencarian</label>
+
+              <div class="search-row">
+
+                <input
+
+                  id="webSearchInput"
+
+                  type="search"
+
+                  placeholder="Contoh: pengadaan komputer Bandung"
+
+                  required
+
+                >
+
+                <button class="primary-button" type="submit">
+
+                  Cari di Web ↗
+
+                </button>
+
+              </div>
+
+            </form>
+
+            <div class="quick-searches">
+
+              <span>Pencarian cepat:</span>
+
+              <button type="button" data-query="pengadaan barang perusahaan Bandung">
+
+                Perusahaan
+
+              </button>
+
+              <button type="button" data-query="pengadaan barang instansi pemerintah">
+
+                Instansi
+
+              </button>
+
+              <button type="button" data-query="kebutuhan jasa konstruksi perusahaan">
+
+                Konstruksi
+
+              </button>
+
+            </div>
+
+            <div class="notice-box">
+
+              <span>ⓘ</span>
+
+              <p>
+
+                Pencarian membuka hasil Google di tab baru.
+
+                Periksa sumber dan informasi kontak secara manual
+
+                sebelum menyimpan lead. Pencarian otomatis dan
+
+                scraping belum diaktifkan.
+
+              </p>
+
+            </div>
+
+          </article>
+
+          <article class="panel">
+
+            <div class="panel-heading">
+
+              <div>
+
+                <h3>Lead Qualification</h3>
+
+                <p>Checklist sebelum menghubungi calon klien.</p>
+
+              </div>
+
+            </div>
+
+            <ul class="qualification-list">
+
+              <li><span>✓</span> Organisasi dan bidang usaha jelas</li>
+
+              <li><span>✓</span> Ada kebutuhan barang atau jasa</li>
+
+              <li><span>✓</span> Sumber informasi dapat diverifikasi</li>
+
+              <li><span>✓</span> Kontak berasal dari kanal publik/resmi</li>
+
+            </ul>
+
+          </article>
+
+        </div>
+
+        <div class="section-heading form-heading">
+
+          <div>
+
+            <h2>Simpan Calon Klien</h2>
+
+            <p>Masukkan informasi yang ditemukan ke database pribadi.</p>
+
+          </div>
+
+        </div>
+
+        <article class="panel">
+
+          <form id="leadForm" class="lead-form">
+
+            <div class="form-grid">
+
+              <div class="field full">
+
+                <label for="companyName">Nama perusahaan / instansi *</label>
+
+                <input
+
+                  id="companyName"
+
+                  name="company_name"
+
+                  placeholder="Contoh: PT Maju Bersama"
+
+                  required
+
+                >
+
+              </div>
+
+              <div class="field">
+
+                <label for="picName">Nama PIC</label>
+
+                <input
+
+                  id="picName"
+
+                  name="pic_name"
+
+                  placeholder="Nama kontak jika tersedia"
+
+                >
+
+              </div>
+
+              <div class="field">
+
+                <label for="businessCategory">Kategori usaha</label>
+
+                <select id="businessCategory" name="business_category">
+
+                  <option value="">Pilih kategori</option>
+
+                  <option>Instansi Pemerintah</option>
+
+                  <option>Perusahaan Swasta</option>
+
+                  <option>Pendidikan</option>
+
+                  <option>Kesehatan</option>
+
+                  <option>Konstruksi</option>
+
+                  <option>Manufaktur</option>
+
+                  <option>Perdagangan</option>
+
+                  <option>Teknologi &amp; IT</option>
+
+                  <option>Lainnya</option>
+
+                </select>
+
+              </div>
+
+              <div class="field">
+
+                <label for="phone">Nomor telepon</label>
+
+                <input
+
+                  id="phone"
+
+                  name="phone"
+
+                  type="tel"
+
+                  placeholder="Nomor kontak publik"
+
+                >
+
+              </div>
+
+              <div class="field">
+
+                <label for="email">Email</label>
+
+                <input
+
+                  id="email"
+
+                  name="email"
+
+                  type="email"
+
+                  placeholder="Email bisnis"
+
+                >
+
+              </div>
+
+              <div class="field">
+
+                <label for="website">Website</label>
+
+                <input
+
+                  id="website"
+
+                  name="website"
+
+                  type="url"
+
+                  placeholder="https://..."
+
+                >
+
+              </div>
+
+              <div class="field">
+
+                <label for="city">Kota</label>
+
+                <input
+
+                  id="city"
+
+                  name="city"
+
+                  placeholder="Contoh: Bandung"
+
+                >
+
+              </div>
+
+              <div class="field full">
+
+                <label for="address">Alamat</label>
+
+                <input
+
+                  id="address"
+
+                  name="address"
+
+                  placeholder="Alamat organisasi (opsional)"
+
+                >
+
+              </div>
+
+              <div class="field full">
+
+                <label for="sourceUrl">Link sumber informasi</label>
+
+                <input
+
+                  id="sourceUrl"
+
+                  name="source_url"
+
+                  type="url"
+
+                  placeholder="https://tautan-sumber.com"
+
+                >
+
+              </div>
+
+              <div class="field">
+
+                <label for="source">Sumber lead</label>
+
+                <select id="source" name="source">
+
+                  <option value="Google Search">Google Search</option>
+
+                  <option value="Google Maps">Google Maps</option>
+
+                  <option value="Website resmi">Website resmi</option>
+
+                  <option value="LinkedIn">LinkedIn</option>
+
+                  <option value="Portal pengadaan resmi">Portal pengadaan resmi</option>
+
+                  <option value="Referensi">Referensi</option>
+
+                  <option value="Lainnya">Lainnya</option>
+
+                </select>
+
+              </div>
+
+              <div class="field">
+
+                <label for="leadStatus">Status awal</label>
+
+                <select id="leadStatus" name="status">
+
+                  <option value="new">New</option>
+
+                  <option value="contacted">Contacted</option>
+
+                  <option value="interested">Interested</option>
+
+                  <option value="need_confirmed">Need Confirmed</option>
+
+                </select>
+
+              </div>
+
+              <div class="field full">
+
+                <label for="notes">Catatan / potensi kebutuhan</label>
+
+                <textarea
+
+                  id="notes"
+
+                  name="notes"
+
+                  rows="3"
+
+                  placeholder="Contoh: kemungkinan membutuhkan pengadaan ATK atau perangkat komputer..."
+
+                ></textarea>
+
+              </div>
+
+            </div>
+
+            <div class="form-actions">
+
+              <p>* Wajib diisi</p>
+
+              <button
+
+                class="primary-button"
+
+                id="saveLeadButton"
+
+                type="submit"
+
+              >
+
+                ＋ Simpan Calon Klien
+
+              </button>
+
+            </div>
+
+          </form>
+
+        </article>
+
+      </section>
+
+      <!-- ================= LEAD DATABASE ================= -->
+
+      <section class="page-section" id="page-lead-database">
+
+        <div class="page-intro">
+
+          <div>
+
+            <span class="eyebrow">YOUR CONTACT PIPELINE</span>
+
+            <h2>Lead Database</h2>
+
+            <p>Kelola dan pantau seluruh calon klien yang sudah disimpan.</p>
+
+          </div>
+
+          <button class="primary-button" type="button" data-go="client-finder">
+
+            ＋ Tambah Lead
+
+          </button>
+
+        </div>
+
+        <article class="panel">
+
+          <div class="database-toolbar">
+
+            <input
+
+              id="databaseSearch"
+
+              type="search"
+
+              placeholder="Cari nama perusahaan atau kota..."
+
+            >
+
+            <select id="statusFilter">
+
+              <option value="">Semua status</option>
+
+              <option value="new">New</option>
+
+              <option value="contacted">Contacted</option>
+
+              <option value="interested">Interested</option>
+
+              <option value="need_confirmed">Need Confirmed</option>
+
+              <option value="referred">Referred</option>
+
+              <option value="quotation">Quotation</option>
+
+              <option value="po">PO</option>
+
+              <option value="lost">Lost</option>
+
+            </select>
+
+          </div>
+
+          <div class="table-wrapper">
+
+            <table class="data-table">
+
+              <thead>
+
+                <tr>
+
+                  <th>Perusahaan</th>
+
+                  <th>Kategori</th>
+
+                  <th>Kota</th>
+
+                  <th>Kontak</th>
+
+                  <th>Status</th>
+
+                  <th>Tanggal</th>
+
+                </tr>
+
+              </thead>
+
+              <tbody id="leadsTableBody">
+
+                <tr>
+
+                  <td colspan="6" class="empty-cell">
+
+                    Memuat data lead...
+
+                  </td>
+
+                </tr>
+
+              </tbody>
+
+            </table>
+
+          </div>
+
+        </article>
+
+      </section>
+
+      <!-- ================= PROCUREMENT NEEDS ================= -->
+
+      <section class="page-section" id="page-procurement-needs">
+
+        <div class="page-intro">
+
+          <div>
+
+            <span class="eyebrow">BUSINESS OPPORTUNITIES</span>
+
+            <h2>Procurement Needs</h2>
+
+            <p>Catat kebutuhan pengadaan dari calon klien.</p>
+
+          </div>
+
+        </div>
+
+        <article class="panel placeholder-panel">
+
+          <span>◈</span>
+
+          <h3>Procurement Needs</h3>
+
+          <p>
+
+            Modul pencatatan kebutuhan pengadaan akan dikembangkan
+
+            pada tahap berikutnya.
+
+          </p>
+
+        </article>
+
+      </section>
+
+      <!-- ================= PARTNER MANAGEMENT ================= -->
+
+      <section class="page-section" id="page-partner-management">
+
+        <div class="page-intro">
+
+          <div>
+
+            <span class="eyebrow">NETWORK MANAGEMENT</span>
+
+            <h2>Partner Management</h2>
+
+            <p>Kelola jaringan partner dan pembagian prospek.</p>
+
+          </div>
+
+        </div>
+
+        <article class="panel placeholder-panel">
+
+          <span>♧</span>
+
+          <h3>Partner Management</h3>
+
+          <p>
+
+            Modul pengelolaan partner akan dikembangkan
+
+            pada tahap berikutnya.
+
+          </p>
+
+        </article>
+
+      </section>
+
+      <!-- ================= DEAL & PO ================= -->
+
+      <section class="page-section" id="page-deal-po">
+
+        <div class="page-intro">
+
+          <div>
+
+            <span class="eyebrow">PROJECT TRACKING</span>
+
+            <h2>Deal &amp; PO</h2>
+
+            <p>Pantau perkembangan referral hingga proyek berhasil.</p>
+
+          </div>
+
+        </div>
+
+        <article class="panel placeholder-panel">
+
+          <span>⇄</span>
+
+          <h3>Deal &amp; PO Tracking</h3>
+
+          <p>
+
+            Modul pemantauan deal dan purchase order akan dikembangkan
+
+            pada tahap berikutnya.
+
+          </p>
+
+        </article>
+
+      </section>
+
+      <!-- ================= FEE TRACKER ================= -->
+
+      <section class="page-section" id="page-fee-tracker">
+
+        <div class="page-intro">
+
+          <div>
+
+            <span class="eyebrow">REVENUE MANAGEMENT</span>
+
+            <h2>Fee Tracker</h2>
+
+            <p>Pantau kesepakatan dan pembayaran fee referral.</p>
+
+          </div>
+
+        </div>
+
+        <article class="panel placeholder-panel">
+
+          <span>◎</span>
+
+          <h3>Fee Tracker</h3>
+
+          <p>
+
+            Modul pencatatan fee akan dikembangkan
+
+            pada tahap berikutnya.
+
+          </p>
+
+        </article>
+
+      </section>
+
+      <!-- ================= REPORTS ================= -->
+
+      <section class="page-section" id="page-reports">
+
+        <div class="page-intro">
+
+          <div>
+
+            <span class="eyebrow">BUSINESS ANALYTICS</span>
+
+            <h2>Reports</h2>
+
+            <p>Lihat perkembangan aktivitas akuisisi klien.</p>
+
+          </div>
+
+        </div>
+
+        <article class="panel placeholder-panel">
+
+          <span>▧</span>
+
+          <h3>Reports &amp; Analytics</h3>
+
+          <p>
+
+            Modul laporan dan analisis akan dikembangkan
+
+            pada tahap berikutnya.
+
+          </p>
+
+        </article>
+
+      </section>
+
+      <!-- FOOTER -->
+
+      <footer class="app-footer">
+
+        <strong>PROCURE FINDER</strong>
+
+        <span>Find Opportunities. Build Connections.</span>
+
+        <span>© 2026</span>
+
+      </footer>
+
+    </main>
+
+  </div>
+
 </body>
 
 </html>
