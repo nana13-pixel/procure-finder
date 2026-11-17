@@ -196,7 +196,11 @@
 
       </div>
 
-      <div class="profile">● Administrator</div>
+      <button id="logoutButton" class="profile" style="border:0;cursor:pointer">
+
+  ● Administrator &nbsp; | &nbsp; Logout
+
+</button>
 
     </div>
 
@@ -285,6 +289,54 @@
 
 </script>
 
+
+<script type="module">
+
+  import { createClient } from
+
+    'https://esm.sh/@supabase/supabase-js@2';
+
+  const supabase = createClient(
+
+    'https://inskhhkztoganifgbhrt.supabase.co',
+
+    'sb_publishable_Aa6oBTaQZGKLs8SZw9m-Lw_RhRXSkoU'
+
+  );
+
+  document.getElementById('logoutButton')
+
+    .addEventListener('click', async () => {
+
+      const button = document.getElementById('logoutButton');
+
+      button.disabled = true;
+
+      button.textContent = 'Logging out...';
+
+      const { error } = await supabase.auth.signOut();
+
+      if (error) {
+
+        alert('Logout gagal: ' + error.message);
+
+        button.disabled = false;
+
+        button.textContent = '● Administrator | Logout';
+
+        return;
+
+      }
+
+      window.location.replace('/login.html');
+
+    });
+
+</script>
+
+</body>
+
+</html>
 </body>
 
 </html>
