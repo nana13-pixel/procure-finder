@@ -1,1 +1,261 @@
 
+
+<!DOCTYPE html>
+
+<html lang="id">
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <meta name="theme-color" content="#7965d8">
+
+  <title>PROCURE FINDER</title>
+
+  <style>
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+
+      font-family: Arial, sans-serif;
+
+      background: #f6f4fc;
+
+      color: #29243d;
+
+    }
+
+    .layout { display: flex; min-height: 100vh; }
+
+    aside {
+
+      width: 235px;
+
+      background: white;
+
+      padding: 25px 17px;
+
+      border-right: 1px solid #eeeaf6;
+
+    }
+
+    .brand { font-size: 21px; font-weight: 800; color: #7965d8; }
+
+    .tagline { font-size: 10px; color: #999; margin: 7px 0 35px; letter-spacing: 1px; }
+
+    .menu-label { font-size: 10px; color: #aaa; margin: 22px 10px 10px; }
+
+    .menu {
+
+      display: block; padding: 12px; margin: 5px 0;
+
+      color: #777; text-decoration: none; border-radius: 10px;
+
+      font-size: 13px;
+
+    }
+
+    .menu.active { background: #eeeaff; color: #725bd2; font-weight: bold; }
+
+    main { flex: 1; padding: 30px; min-width: 0; }
+
+    .top { display: flex; justify-content: space-between; align-items: center; gap: 15px; }
+
+    h1 { font-size: 25px; }
+
+    .muted { color: #999; font-size: 13px; margin-top: 7px; }
+
+    .profile {
+
+      background: white; border-radius: 30px; padding: 10px 16px;
+
+      color: #7965d8; font-size: 12px;
+
+    }
+
+    .hero {
+
+      margin-top: 27px; padding: 25px; border-radius: 18px;
+
+      background: linear-gradient(110deg,#e9e3ff,#f9efff);
+
+      display: flex; justify-content: space-between; align-items: center;
+
+      gap: 15px; min-height: 150px;
+
+    }
+
+    .hero h2 { font-size: 22px; margin-bottom: 9px; }
+
+    .hero p { color: #777; font-size: 13px; line-height: 1.6; }
+
+    .hero-icon { font-size: 55px; }
+
+    .section-title { margin: 28px 0 15px; font-size: 16px; }
+
+    .stats { display: grid; grid-template-columns: repeat(4,1fr); gap: 14px; }
+
+    .card {
+
+      background: white; padding: 19px; border-radius: 15px;
+
+      border: 1px solid #f0edf7;
+
+    }
+
+    .card small { color: #999; font-size: 11px; }
+
+    .number { font-size: 25px; font-weight: bold; margin-top: 12px; }
+
+    .purple { color: #7965d8; }
+
+    .pink { color: #e47ba8; }
+
+    .blue { color: #5598d7; }
+
+    .green { color: #4aaf91; }
+
+    .content-grid { display: grid; grid-template-columns: 1.5fr 1fr; gap: 15px; }
+
+    .empty { color: #aaa; font-size: 13px; padding: 25px 0; text-align: center; }
+
+    .footer { margin-top: 30px; color: #aaa; font-size: 11px; text-align: center; }
+
+    @media(max-width:750px) {
+
+      aside { width: 70px; padding: 20px 8px; }
+
+      .brand { font-size: 12px; text-align: center; }
+
+      .tagline, .menu-label { display: none; }
+
+      .menu { font-size: 0; text-align: center; padding: 14px 3px; }
+
+      .menu::first-letter { font-size: 17px; }
+
+      main { padding: 19px 13px; }
+
+      .stats { grid-template-columns: repeat(2,1fr); gap: 9px; }
+
+      .content-grid { grid-template-columns: 1fr; }
+
+      h1 { font-size: 19px; }
+
+      .hero h2 { font-size: 18px; }
+
+    }
+
+  </style>
+
+</head>
+
+<body>
+
+<div class="layout">
+
+  <aside>
+
+    <div class="brand">PROCURE.</div>
+
+    <div class="tagline">CLIENT ACQUISITION SYSTEM</div>
+
+    <div class="menu-label">MAIN MENU</div>
+
+    <a class="menu active" href="#">▦ Dashboard</a>
+
+    <a class="menu" href="#">⌕ Client Finder</a>
+
+    <a class="menu" href="#">▤ Lead Database</a>
+
+    <a class="menu" href="#">◈ Procurement Needs</a>
+
+    <div class="menu-label">MANAGEMENT</div>
+
+    <a class="menu" href="#">♧ Partner Management</a>
+
+    <a class="menu" href="#">⇄ Deal & PO</a>
+
+    <a class="menu" href="#">◎ Fee Tracker</a>
+
+    <a class="menu" href="#">▧ Reports</a>
+
+  </aside>
+
+  <main>
+
+    <div class="top">
+
+      <div>
+
+        <h1>Dashboard Overview</h1>
+
+        <p class="muted">Welcome back! Let's find new opportunities.</p>
+
+      </div>
+
+      <div class="profile">● Administrator</div>
+
+    </div>
+
+    <section class="hero">
+
+      <div>
+
+        <h2>Find Your Next Opportunity!</h2>
+
+        <p>Discover potential clients, build connections,<br>and turn opportunities into successful projects.</p>
+
+      </div>
+
+      <div class="hero-icon">🔎</div>
+
+    </section>
+
+    <h3 class="section-title">Business Overview</h3>
+
+    <section class="stats">
+
+      <div class="card"><small>Total Leads</small><div class="number purple">0</div></div>
+
+      <div class="card"><small>Active Prospects</small><div class="number pink">0</div></div>
+
+      <div class="card"><small>Successful PO</small><div class="number blue">0</div></div>
+
+      <div class="card"><small>Total Fee</small><div class="number green">Rp0</div></div>
+
+    </section>
+
+    <h3 class="section-title">Activity Overview</h3>
+
+    <section class="content-grid">
+
+      <div class="card">
+
+        <b>Recent Leads</b>
+
+        <div class="empty">Belum ada data calon klien.</div>
+
+      </div>
+
+      <div class="card">
+
+        <b>Pipeline Progress</b>
+
+        <div class="empty">Belum ada aktivitas.</div>
+
+      </div>
+
+    </section>
+
+    <div class="footer">PROCURE FINDER © 2026 · Find Opportunities. Build Connections.</div>
+
+  </main>
+
+</div>
+
+</body>
+
+</html>
