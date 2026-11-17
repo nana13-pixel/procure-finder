@@ -1,217 +1,615 @@
+
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
+/* =========================================
+   SUPABASE CONFIGURATION
+========================================= */
+
 const SUPABASE_URL = "https://inskhhkztoganifgbhrt.supabase.co";
-const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_Aa6oBTaQZGKLs8SZw9m-Lw_RhRXSkoU";
-const supabase = createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
+const SUPABASE_KEY = "sb_publishable_Aa6oBTaQZGKLs8SZw9m-Lw_RhRXSkoU";
 
-const $ = (id) => document.getElementById(id);
+const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
+
+/* =========================================
+   ELEMENTS
+========================================= */
+
+const loadingScreen = document.getElementById("loadingScreen");
+const appShell = document.getElementById("appShell");
+
+const pageTitle = document.getElementById("pageTitle");
+const breadcrumb = document.getElementById("breadcrumb");
+
+const totalLeadsElement = document.getElementById("totalLeads");
+const activeLeadsElement = document.getElementById("activeLeads");
+const poCountElement = document.getElementById("poCount");
+
+const recentLeadsElement = document.getElementById("recentLeads");
+const pipelineSummaryElement = document.getElementById("pipelineSummary");
+
+const leadForm = document.getElementById("leadForm");
+const saveLeadButton = document.getElementById("saveLeadButton");
+
+const leadsTableBody = document.getElementById("leadsTableBody");
+const databaseSearch = document.getElementById("databaseSearch");
+const statusFilter = document.getElementById("statusFilter");
+
 let allLeads = [];
-let toastTimer;
 
-function notify(message, isError = false) {
-  const toast = $("toast");
-  if (!toast) return;
-  toast.textContent = message;
-  toast.style.background = isError ? "#9d4059" : "#302b43";
-  toast.classList.add("show");
-  clearTimeout(toastTimer);
-  toastTimer = setTimeout(() => toast.classList.remove("show"), 3200);
+/* =========================================
+   HELPERS
+========================================= */
+
+function showLoading() {
+  if (loadingScreen) loadingScreen.hidden = false;
+  if (appShell) appShell.hidden = true;
 }
 
-function showPage(page) {
-  const validPages = ["dashboard","client-finder","lead-database","procurement-needs","partner-management","deal-po","fee-tracker","reports"];
-  if (!validPages.includes(page)) page = "dashboard";
-  document.querySelectorAll(".page-section").forEach(section => section.classList.remove("active"));
-  const target = $("page-" + page);
-  if (target) target.classList.add("active");
-  document.querySelectorAll(".nav-link").forEach(link => link.classList.toggle("active", link.dataset.page === page));
-  const titles = {
-    dashboard:"Dashboard Overview","client-finder":"Client Finder","lead-database":"Lead Database",
-    "procurement-needs":"Procurement Needs","partner-management":"Partner Management",
-    "deal-po":"Deal & PO","fee-tracker":"Fee Tracker",reports:"Reports"
+function showApplication() {
+  if (loadingScreen) loadingScreen.hidden = true;
+  if (appShell) appShell.hidden = false;
+}
+
+function escapeHTML(value) {
+  return String(value ?? "").replace(/[&<>"']/g, char => ({
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': "&quot;",
+    "'": "&#039;"
+  })[char]);
+}
+
+function formatDate(value) {
+  if (!value) return "-";
+
+  const date = new Date(value);
+
+  if (Number.isNaN(date.getTime())) return "-";
+
+  return date.toLocaleDateString("id-ID", {
+    day: "2-digit",
+    month: "short",
+    year: "numeric"
+  });
+}
+
+function formatCurrency(value) {
+  return new Intl.NumberFormat("id-ID", {
+    style: "currency",
+    currency: "IDR",
+    maximumFractionDigits: 0
+  }).format(Number(value) || 0);
+}
+
+function getStatusLabel(status) {
+  const labels = {
+    new: "New",
+    contacted: "Contacted",
+    interested: "Interested",
+    need_confirmed: "Need Confirmed",
+    referred: "Referred",
+    quotation: "Quotation",
+    po: "PO",
+    lost: "Lost"
   };
-  $("pageTitle").textContent = titles[page];
-  $("breadcrumb").textContent = titles[page].toUpperCase();
-  $("sidebar").classList.remove("open");
-  if (page === "lead-database") loadLeads();
-  if (page === "dashboard") loadDashboard();
+
+  return labels[status] || status || "New";
 }
 
-function navigate(page) {
-  if (location.hash !== "#" + page) location.hash = page;
-  showPage(page);
+function getStatusClass(status) {
+  const allowed = [
+    "new",
+    "contacted",
+    "interested",
+    "need_confirmed",
+    "referred",
+    "quotation",
+    "po",
+    "lost"
+  ];
+
+  return allowed.includes(status) ? `status-${status}` : "status-badge";
 }
 
-document.addEventListener("click", (event) => {
-  const nav = event.target.closest("[data-page]");
-  const go = event.target.closest("[data-go]");
-  if (nav) {
-    event.preventDefault();
-    navigate(nav.dataset.page);
-  } else if (go) {
-    event.preventDefault();
-    navigate(go.dataset.go);
+function showError(message) {
+  alert(message || "Terjadi kesalahan. Silakan coba lagi.");
+}
+
+/* =========================================
+   AUTHENTICATION
+========================================= */
+
+async function checkSession() {
+  showLoading();
+
+  try {
+    const { data, error } = await supabase.auth.getSession();
+
+    if (error) throw error;
+
+    if (!data.session) {
+      window.location.replace("/login.html");
+      return false;
+    }
+
+    showApplication();
+
+    return true;
+
+  } catch (error) {
+    console.error("Session error:", error);
+
+    window.location.replace("/login.html");
+
+    return false;
   }
-});
-
-$("mobileMenuButton")?.addEventListener("click", () => $("sidebar").classList.toggle("open"));
-
-$("logoutButton")?.addEventListener("click", async () => {
-  const button = $("logoutButton");
-  button.disabled = true;
-  button.textContent = "Keluar...";
-  const { error } = await supabase.auth.signOut();
-  if (error) {
-    notify("Logout gagal: " + error.message, true);
-    button.disabled = false;
-    button.innerHTML = "↪ <span>Logout</span>";
-    return;
-  }
-  window.location.replace("/login.html");
-});
-
-function escapeHtml(value = "") {
-  return String(value).replace(/[&<>"']/g, char => ({
-    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
-  }[char]));
 }
 
-const statusLabels = {
-  new:"New", contacted:"Contacted", interested:"Interested",
-  need_confirmed:"Need Confirmed", referred:"Referred",
-  quotation:"Quotation", po:"PO", lost:"Lost"
+async function logout() {
+  const button = document.getElementById("logoutButton");
+
+  if (button) {
+    button.disabled = true;
+    button.textContent = "Logging out...";
+  }
+
+  try {
+    const { error } = await supabase.auth.signOut();
+
+    if (error) throw error;
+
+    window.location.replace("/login.html");
+
+  } catch (error) {
+    console.error("Logout error:", error);
+
+    showError("Logout gagal: " + error.message);
+
+    if (button) {
+      button.disabled = false;
+      button.innerHTML = "<span>↪</span> Logout";
+    }
+  }
+}
+
+/* =========================================
+   NAVIGATION
+========================================= */
+
+const pageNames = {
+  dashboard: "Dashboard Overview",
+  "client-finder": "Client Finder",
+  "lead-database": "Lead Database",
+  "procurement-needs": "Procurement Needs",
+  "partner-management": "Partner Management",
+  "deal-po": "Deal & PO",
+  "fee-tracker": "Fee Tracker",
+  reports: "Reports"
 };
 
-function statusBadge(status) {
-  const safe = statusLabels[status] ? status : "New";
-  return `<span class="status-badge status-${escapeHtml(status || "new")}">${safe}</span>`;
+function navigateTo(page) {
+  if (!pageNames[page]) page = "dashboard";
+
+  document.querySelectorAll(".page-section").forEach(section => {
+    section.classList.remove("active");
+  });
+
+  document.querySelectorAll(".nav-link").forEach(link => {
+    link.classList.toggle("active", link.dataset.page === page);
+  });
+
+  const selectedPage = document.getElementById(`page-${page}`);
+
+  if (selectedPage) {
+    selectedPage.classList.add("active");
+  }
+
+  if (pageTitle) pageTitle.textContent = pageNames[page];
+
+  if (breadcrumb) {
+    breadcrumb.textContent = page.replaceAll("-", " ").toUpperCase();
+  }
+
+  document.getElementById("sidebar")?.classList.remove("open");
+
+  if (page === "lead-database") {
+    loadLeads();
+  }
+
+  if (page === "dashboard") {
+    loadDashboard();
+  }
+
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+function setupNavigation() {
+  document.querySelectorAll("[data-page]").forEach(link => {
+    link.addEventListener("click", event => {
+      event.preventDefault();
+
+      const page = link.dataset.page;
+
+      history.replaceState(null, "", `#${page}`);
+
+      navigateTo(page);
+    });
+  });
+
+  document.querySelectorAll("[data-go]").forEach(link => {
+    link.addEventListener("click", event => {
+      event.preventDefault();
+
+      const page = link.dataset.go;
+
+      history.replaceState(null, "", `#${page}`);
+
+      navigateTo(page);
+    });
+  });
+
+  const initialPage = window.location.hash.replace("#", "");
+
+  navigateTo(pageNames[initialPage] ? initialPage : "dashboard");
+
+  document.getElementById("mobileMenuButton")?.addEventListener("click", () => {
+    document.getElementById("sidebar")?.classList.toggle("open");
+  });
+
+  document.getElementById("logoutButton")?.addEventListener("click", logout);
+}
+
+/* =========================================
+   GOOGLE SEARCH
+========================================= */
+
+function setupWebSearch() {
+  const searchForm = document.getElementById("webSearchForm");
+  const searchInput = document.getElementById("webSearchInput");
+
+  searchForm?.addEventListener("submit", event => {
+    event.preventDefault();
+
+    const query = searchInput?.value.trim();
+
+    if (!query) {
+      showError("Masukkan kata kunci pencarian terlebih dahulu.");
+      return;
+    }
+
+    const searchURL = "https://www.google.com/search?q=" +
+      encodeURIComponent(query);
+
+    window.open(searchURL, "_blank", "noopener,noreferrer");
+  });
+
+  document.querySelectorAll("[data-query]").forEach(button => {
+    button.addEventListener("click", () => {
+      if (!searchInput) return;
+
+      searchInput.value = button.dataset.query || "";
+
+      searchInput.focus();
+    });
+  });
+}
+
+/* =========================================
+   SAVE LEAD
+========================================= */
+
+function setupLeadForm() {
+  leadForm?.addEventListener("submit", async event => {
+    event.preventDefault();
+
+    if (!leadForm.reportValidity()) return;
+
+    const formData = new FormData(leadForm);
+
+    const lead = {
+      company_name: formData.get("company_name")?.toString().trim(),
+      pic: formData.get("pic_name")?.toString().trim() || null,
+      phone: formData.get("phone")?.toString().trim() || null,
+      email: formData.get("email")?.toString().trim() || null,
+      website: formData.get("website")?.toString().trim() || null,
+      address: formData.get("address")?.toString().trim() || null,
+      city: formData.get("city")?.toString().trim() || null,
+      business_category: formData.get("business_category") || null,
+      source: formData.get("source") || null,
+      source_url: formData.get("source_url")?.toString().trim() || null,
+      status: formData.get("status") || "new",
+      notes: formData.get("notes")?.toString().trim() || null
+    };
+
+    if (!lead.company_name) {
+      showError("Nama perusahaan atau instansi wajib diisi.");
+      return;
+    }
+
+    saveLeadButton.disabled = true;
+    saveLeadButton.textContent = "Menyimpan...";
+
+    try {
+      const { error } = await supabase
+        .from("leads")
+        .insert([lead]);
+
+      if (error) throw error;
+
+      alert("Calon klien berhasil disimpan!");
+
+      leadForm.reset();
+
+      await loadLeads();
+      await loadDashboard();
+
+      navigateTo("lead-database");
+
+    } catch (error) {
+      console.error("Save lead error:", error);
+
+      showError(
+        "Data belum berhasil disimpan.\n\n" +
+        error.message +
+        "\n\nPeriksa struktur kolom database dan kebijakan akses."
+      );
+
+    } finally {
+      saveLeadButton.disabled = false;
+      saveLeadButton.innerHTML = "＋ Simpan Calon Klien";
+    }
+  });
+}
+
+/* =========================================
+   LOAD LEADS
+========================================= */
+
+async function fetchLeads() {
+  const { data, error } = await supabase
+    .from("leads")
+    .select("*")
+    .order("created_at", { ascending: false });
+
+  if (error) throw error;
+
+  return data || [];
 }
 
 async function loadLeads() {
-  const wrap = $("leadTableWrap");
-  wrap.innerHTML = '<div class="table-empty">Memuat data...</div>';
-  const { data, error } = await supabase
-    .from("leads")
-    .select("id,company_name,pic_name,phone,email,city,business_category,status,created_at")
-    .order("created_at", { ascending: false });
-  if (error) {
-    wrap.innerHTML = `<div class="table-empty">Gagal memuat data: ${escapeHtml(error.message)}</div>`;
-    notify("Tidak bisa memuat database lead. Periksa struktur tabel dan kebijakan RLS.", true);
-    return;
+  if (!leadsTableBody) return;
+
+  leadsTableBody.innerHTML = `
+    <tr>
+      <td colspan="6" class="empty-cell">Memuat data lead...</td>
+    </tr>
+  `;
+
+  try {
+    allLeads = await fetchLeads();
+
+    renderLeadTable();
+
+  } catch (error) {
+    console.error("Load leads error:", error);
+
+    leadsTableBody.innerHTML = `
+      <tr>
+        <td colspan="6" class="empty-cell">
+          Gagal memuat data: ${escapeHTML(error.message)}
+        </td>
+      </tr>
+    `;
   }
-  allLeads = data || [];
-  renderLeadTable();
-  updateDashboardNumbers();
 }
+
+/* =========================================
+   RENDER LEAD TABLE
+========================================= */
 
 function renderLeadTable() {
-  const term = ($("databaseSearch")?.value || "").trim().toLowerCase();
-  const status = $("statusFilter")?.value || "";
+  if (!leadsTableBody) return;
+
+  const keyword = databaseSearch?.value.trim().toLowerCase() || "";
+  const selectedStatus = statusFilter?.value || "";
+
   const filtered = allLeads.filter(lead => {
-    const text = [lead.company_name, lead.city, lead.business_category, lead.pic_name].join(" ").toLowerCase();
-    return (!term || text.includes(term)) && (!status || lead.status === status);
+    const searchText = [
+      lead.company_name,
+      lead.city,
+      lead.business_category,
+      lead.pic,
+      lead.email
+    ].join(" ").toLowerCase();
+
+    const matchesKeyword = searchText.includes(keyword);
+    const matchesStatus = !selectedStatus || lead.status === selectedStatus;
+
+    return matchesKeyword && matchesStatus;
   });
+
   if (!filtered.length) {
-    $("leadTableWrap").innerHTML = '<div class="table-empty">Belum ada lead yang cocok. Tambahkan calon klien melalui Client Finder.</div>';
+    leadsTableBody.innerHTML = `
+      <tr>
+        <td colspan="6" class="empty-cell">
+          Tidak ada data yang cocok.
+        </td>
+      </tr>
+    `;
     return;
   }
-  const rows = filtered.map(lead => `<tr>
-    <td><strong>${escapeHtml(lead.company_name)}</strong><small>${escapeHtml(lead.business_category || "Kategori belum diisi")}</small></td>
-    <td>${escapeHtml(lead.pic_name || "-")}</td>
-    <td>${escapeHtml(lead.city || "-")}</td>
-    <td>${escapeHtml(lead.phone || "-")}</td>
-    <td>${statusBadge(lead.status)}</td>
-  </tr>`).join("");
-  $("leadTableWrap").innerHTML = `<table class="lead-table"><thead><tr><th>PERUSAHAAN / INSTANSI</th><th>PIC</th><th>KOTA</th><th>KONTAK</th><th>STATUS</th></tr></thead><tbody>${rows}</tbody></table>`;
+
+  leadsTableBody.innerHTML = filtered.map(lead => `
+    <tr>
+      <td>
+        <strong>${escapeHTML(lead.company_name)}</strong>
+      </td>
+      <td>${escapeHTML(lead.business_category || "-")}</td>
+      <td>${escapeHTML(lead.city || "-")}</td>
+      <td>${escapeHTML(lead.phone || lead.email || "-")}</td>
+      <td>
+        <span class="status-badge ${getStatusClass(lead.status)}">
+          ${escapeHTML(getStatusLabel(lead.status))}
+        </span>
+      </td>
+      <td>${escapeHTML(formatDate(lead.created_at))}</td>
+    </tr>
+  `).join("");
 }
 
-$("databaseSearch")?.addEventListener("input", renderLeadTable);
-$("statusFilter")?.addEventListener("change", renderLeadTable);
+/* =========================================
+   DASHBOARD
+========================================= */
 
-function updateDashboardNumbers() {
-  $("totalLeads").textContent = allLeads.length;
-  $("activeLeads").textContent = allLeads.filter(x => !["po","lost"].includes(x.status)).length;
-  $("poCount").textContent = allLeads.filter(x => x.status === "po").length;
+async function loadDashboard() {
+  try {
+    allLeads = await fetchLeads();
+
+    const total = allLeads.length;
+
+    const activeStatuses = [
+      "new",
+      "contacted",
+      "interested",
+      "need_confirmed",
+      "referred",
+      "quotation"
+    ];
+
+    const active = allLeads.filter(lead =>
+      activeStatuses.includes(lead.status)
+    ).length;
+
+    const successfulPO = allLeads.filter(lead =>
+      lead.status === "po"
+    ).length;
+
+    if (totalLeadsElement) {
+      totalLeadsElement.textContent = total;
+    }
+
+    if (activeLeadsElement) {
+      activeLeadsElement.textContent = active;
+    }
+
+    if (poCountElement) {
+      poCountElement.textContent = successfulPO;
+    }
+
+    renderRecentLeads();
+    renderPipeline();
+
+  } catch (error) {
+    console.error("Dashboard error:", error);
+
+    if (recentLeadsElement) {
+      recentLeadsElement.innerHTML = `
+        <p class="muted">Data dashboard belum dapat dimuat.</p>
+      `;
+    }
+  }
+}
+
+/* =========================================
+   RECENT LEADS
+========================================= */
+
+function renderRecentLeads() {
+  if (!recentLeadsElement) return;
+
   const recent = allLeads.slice(0, 5);
-  $("recentLeads").innerHTML = recent.length ? `<div class="recent-list">${recent.map(lead => `<div class="recent-row"><div><strong>${escapeHtml(lead.company_name)}</strong><small>${escapeHtml(lead.city || "Lokasi belum diisi")}</small></div>${statusBadge(lead.status)}</div>`).join("")}</div>` : '<div class="empty-state"><span>▤</span><strong>Belum ada data calon klien</strong><p>Mulai tambahkan calon klien melalui Client Finder.</p></div>';
-  const stages = ["new","contacted","interested","need_confirmed","referred","quotation","po","lost"];
-  $("pipelineSummary").innerHTML = stages.map(stage => {
-    const count = allLeads.filter(x => x.status === stage).length;
-    const percent = allLeads.length ? Math.round(count / allLeads.length * 100) : 0;
-    return `<div class="pipeline-row"><span>${statusLabels[stage]}</span><div class="pipeline-track"><div class="pipeline-fill" style="width:${percent}%"></div></div><span class="pipeline-count">${count}</span></div>`;
+
+  if (!recent.length) {
+    recentLeadsElement.innerHTML = `
+      <span>▤</span>
+      <strong>Belum ada data calon klien</strong>
+      <p>Mulai tambahkan calon klien melalui Client Finder.</p>
+    `;
+    return;
+  }
+
+  recentLeadsElement.innerHTML = recent.map(lead => `
+    <div class="pipeline-row">
+      <span>${escapeHTML(lead.company_name)}</span>
+      <span class="status-badge ${getStatusClass(lead.status)}">
+        ${escapeHTML(getStatusLabel(lead.status))}
+      </span>
+    </div>
+  `).join("");
+}
+
+/* =========================================
+   PIPELINE SUMMARY
+========================================= */
+
+function renderPipeline() {
+  if (!pipelineSummaryElement) return;
+
+  const statuses = [
+    ["New", "new"],
+    ["Contacted", "contacted"],
+    ["Interested", "interested"],
+    ["Need Confirmed", "need_confirmed"],
+    ["Referred", "referred"],
+    ["Quotation", "quotation"],
+    ["PO", "po"],
+    ["Lost", "lost"]
+  ];
+
+  pipelineSummaryElement.innerHTML = statuses.map(([label, key]) => {
+    const count = allLeads.filter(lead => lead.status === key).length;
+
+    return `
+      <div class="pipeline-row">
+        <span>${label}</span>
+        <strong>${count}</strong>
+      </div>
+    `;
   }).join("");
 }
 
-async function loadDashboard() {
-  const { data, error } = await supabase.from("leads").select("id,company_name,pic_name,city,business_category,status,created_at").order("created_at", { ascending: false });
-  if (error) {
-    notify("Dashboard belum dapat membaca data lead: " + error.message, true);
-    return;
-  }
-  allLeads = data || [];
-  updateDashboardNumbers();
+/* =========================================
+   SEARCH AND FILTER EVENTS
+========================================= */
+
+function setupDatabaseFilters() {
+  databaseSearch?.addEventListener("input", renderLeadTable);
+  statusFilter?.addEventListener("change", renderLeadTable);
 }
 
-$("webSearchForm")?.addEventListener("submit", (event) => {
-  event.preventDefault();
-  const query = $("webSearchInput").value.trim();
-  if (!query) return;
-  window.open("https://www.google.com/search?q=" + encodeURIComponent(query), "_blank", "noopener");
-});
+/* =========================================
+   DATE LABEL
+========================================= */
 
-document.querySelectorAll("[data-query]").forEach(button => {
-  button.addEventListener("click", () => {
-    $("webSearchInput").value = button.dataset.query;
-    $("webSearchInput").focus();
+function setupDate() {
+  const dateElement = document.getElementById("todayLabel");
+
+  if (!dateElement) return;
+
+  dateElement.textContent = new Date().toLocaleDateString("id-ID", {
+    day: "numeric",
+    month: "long",
+    year: "numeric"
   });
-});
+}
 
-$("leadForm")?.addEventListener("submit", async (event) => {
-  event.preventDefault();
-  const button = $("saveLeadButton");
-  const form = event.currentTarget;
-  const formData = new FormData(form);
-  const payload = Object.fromEntries(formData.entries());
-  payload.company_name = (payload.company_name || "").trim();
-  payload.pic_name = (payload.pic_name || "").trim() || null;
-  for (const key of ["phone","email","website","address","city","source_url","notes","business_category"]) {
-    payload[key] = (payload[key] || "").trim() || null;
-  }
-  payload.lead_score = 0;
-  if (!payload.company_name) {
-    notify("Nama perusahaan atau instansi wajib diisi.", true);
-    return;
-  }
-  button.disabled = true;
-  button.textContent = "Menyimpan...";
-  const { error } = await supabase.from("leads").insert(payload);
-  button.disabled = false;
-  button.textContent = "＋ Simpan Calon Klien";
-  if (error) {
-    notify("Gagal menyimpan: " + error.message, true);
-    return;
-  }
-  form.reset();
-  notify("Calon klien berhasil disimpan!");
-  await loadDashboard();
-  navigate("lead-database");
-});
+/* =========================================
+   INITIALIZATION
+========================================= */
 
-async function startApp() {
-  const { data, error } = await supabase.auth.getSession();
-  if (error || !data.session) {
-    window.location.replace("/login.html");
-    return;
-  }
-  $("loadingScreen").hidden = true;
-  $("appShell").hidden = false;
-  document.body.classList.remove("app-loading");
-  $("todayLabel").textContent = new Intl.DateTimeFormat("id-ID", { day:"numeric", month:"long", year:"numeric" }).format(new Date());
-  const initialPage = location.hash.replace("#", "") || "dashboard";
-  showPage(initialPage);
+async function initializeApp() {
+  const authenticated = await checkSession();
+
+  if (!authenticated) return;
+
+  setupNavigation();
+  setupWebSearch();
+  setupLeadForm();
+  setupDatabaseFilters();
+  setupDate();
+
   await loadDashboard();
 }
 
-window.addEventListener("hashchange", () => showPage(location.hash.replace("#", "") || "dashboard"));
-startApp();
-
+initializeApp();
