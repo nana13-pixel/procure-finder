@@ -1,1 +1,271 @@
 
+
+<!DOCTYPE html>
+
+<html lang="id">
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <meta name="theme-color" content="#7965d8">
+
+  <title>Login | PROCURE FINDER</title>
+
+  <style>
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+
+      font-family: Arial, sans-serif;
+
+      background: linear-gradient(135deg,#eee9ff,#faf7ff);
+
+      min-height: 100vh;
+
+      display: flex;
+
+      justify-content: center;
+
+      align-items: center;
+
+      padding: 20px;
+
+      color: #30294b;
+
+    }
+
+    .login-box {
+
+      background: white;
+
+      width: 100%;
+
+      max-width: 410px;
+
+      padding: 35px;
+
+      border-radius: 22px;
+
+      box-shadow: 0 15px 50px #6650a51a;
+
+    }
+
+    .logo {
+
+      color: #7965d8;
+
+      font-size: 25px;
+
+      font-weight: 800;
+
+      text-align: center;
+
+      letter-spacing: 1px;
+
+    }
+
+    .subtitle {
+
+      color: #aaa;
+
+      text-align: center;
+
+      font-size: 10px;
+
+      letter-spacing: 2px;
+
+      margin-top: 8px;
+
+    }
+
+    h2 { margin-top: 35px; font-size: 23px; }
+
+    .desc { color: #999; font-size: 13px; margin: 9px 0 25px; }
+
+    label { display: block; font-size: 12px; margin: 17px 0 8px; }
+
+    input {
+
+      width: 100%;
+
+      padding: 14px;
+
+      border: 1px solid #e9e5f1;
+
+      border-radius: 10px;
+
+      outline: none;
+
+      font-size: 14px;
+
+    }
+
+    input:focus { border-color: #7965d8; }
+
+    button {
+
+      width: 100%;
+
+      border: none;
+
+      padding: 15px;
+
+      border-radius: 10px;
+
+      background: #7965d8;
+
+      color: white;
+
+      font-weight: bold;
+
+      margin-top: 25px;
+
+      cursor: pointer;
+
+    }
+
+    button:disabled { opacity: .6; }
+
+    #message {
+
+      margin-top: 15px;
+
+      font-size: 12px;
+
+      text-align: center;
+
+      line-height: 1.5;
+
+    }
+
+    .footer {
+
+      margin-top: 30px;
+
+      text-align: center;
+
+      color: #bbb;
+
+      font-size: 11px;
+
+    }
+
+  </style>
+
+</head>
+
+<body>
+
+  <div class="login-box">
+
+    <div class="logo">PROCURE FINDER</div>
+
+    <div class="subtitle">CLIENT ACQUISITION SYSTEM</div>
+
+    <h2>Welcome Back!</h2>
+
+    <p class="desc">Sign in to access your workspace.</p>
+
+    <form id="loginForm">
+
+      <label for="email">Email Address</label>
+
+      <input id="email" type="email" placeholder="Masukkan email" required>
+
+      <label for="password">Password</label>
+
+      <input id="password" type="password" placeholder="Masukkan password" required>
+
+      <button id="loginButton" type="submit">Sign In</button>
+
+      <div id="message"></div>
+
+    </form>
+
+    <div class="footer">
+
+      PROCURE FINDER © 2026<br>
+
+      Find Opportunities. Build Connections.
+
+    </div>
+
+  </div>
+
+  <script type="module">
+
+    import { createClient } from
+
+      'https://esm.sh/@supabase/supabase-js@2';
+
+    const SUPABASE_URL = 'https://inskhhkztoganifgbhrt.supabase.co';
+
+    const SUPABASE_KEY = 'sb_publishable_Aa6oBTaQZGKLs8SZw9m-Lw_RhRXSkoU';
+
+    const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
+
+    const form = document.getElementById('loginForm');
+
+    const message = document.getElementById('message');
+
+    const button = document.getElementById('loginButton');
+
+    // Jika sudah login, langsung buka dashboard
+
+    const { data } = await supabase.auth.getSession();
+
+    if (data.session) {
+
+      window.location.replace('/index.html');
+
+    }
+
+    form.addEventListener('submit', async (event) => {
+
+      event.preventDefault();
+
+      button.disabled = true;
+
+      button.textContent = 'Signing in...';
+
+      message.textContent = '';
+
+      const email = document.getElementById('email').value.trim();
+
+      const password = document.getElementById('password').value;
+
+      const { error } = await supabase.auth.signInWithPassword({
+
+        email,
+
+        password
+
+      });
+
+      if (error) {
+
+        message.style.color = '#d94b65';
+
+        message.textContent = error.message;
+
+        button.disabled = false;
+
+        button.textContent = 'Sign In';
+
+        return;
+
+      }
+
+      window.location.replace('/index.html');
+
+    });
+
+  </script>
+
+</body>
+
+</html>
