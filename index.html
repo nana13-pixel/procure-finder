@@ -34,13 +34,21 @@
 
   <div class="app-shell" id="appShell" hidden>
 
+    <!-- SIDEBAR -->
+
     <aside class="sidebar" id="sidebar">
 
       <a href="#dashboard" class="brand">
 
         <span class="brand-mark">P.</span>
 
-        <span class="brand-name"><strong>PROCURE</strong><small>FINDER</small></span>
+        <span class="brand-name">
+
+          <strong>PROCURE</strong>
+
+          <small>FINDER</small>
+
+        </span>
 
       </a>
 
@@ -50,13 +58,37 @@
 
       <nav class="navigation">
 
-        <a href="#dashboard" class="nav-link active" data-page="dashboard"><span class="nav-icon">▦</span><span>Dashboard Overview</span></a>
+        <a href="#dashboard" class="nav-link active" data-page="dashboard">
 
-        <a href="#client-finder" class="nav-link" data-page="client-finder"><span class="nav-icon">⌕</span><span>Client Finder</span></a>
+          <span class="nav-icon">▦</span>
 
-        <a href="#lead-database" class="nav-link" data-page="lead-database"><span class="nav-icon">▤</span><span>Lead Database</span></a>
+          <span>Dashboard Overview</span>
 
-        <a href="#procurement-needs" class="nav-link" data-page="procurement-needs"><span class="nav-icon">◈</span><span>Procurement Needs</span></a>
+        </a>
+
+        <a href="#client-finder" class="nav-link" data-page="client-finder">
+
+          <span class="nav-icon">⌕</span>
+
+          <span>Client Finder</span>
+
+        </a>
+
+        <a href="#lead-database" class="nav-link" data-page="lead-database">
+
+          <span class="nav-icon">▤</span>
+
+          <span>Lead Database</span>
+
+        </a>
+
+        <a href="#procurement-needs" class="nav-link" data-page="procurement-needs">
+
+          <span class="nav-icon">◈</span>
+
+          <span>Procurement Needs</span>
+
+        </a>
 
       </nav>
 
@@ -64,13 +96,37 @@
 
       <nav class="navigation">
 
-        <a href="#partner-management" class="nav-link" data-page="partner-management"><span class="nav-icon">♧</span><span>Partner Management</span></a>
+        <a href="#partner-management" class="nav-link" data-page="partner-management">
 
-        <a href="#deal-po" class="nav-link" data-page="deal-po"><span class="nav-icon">⇄</span><span>Deal &amp; PO</span></a>
+          <span class="nav-icon">♧</span>
 
-        <a href="#fee-tracker" class="nav-link" data-page="fee-tracker"><span class="nav-icon">◎</span><span>Fee Tracker</span></a>
+          <span>Partner Management</span>
 
-        <a href="#reports" class="nav-link" data-page="reports"><span class="nav-icon">▧</span><span>Reports</span></a>
+        </a>
+
+        <a href="#deal-po" class="nav-link" data-page="deal-po">
+
+          <span class="nav-icon">⇄</span>
+
+          <span>Deal &amp; PO</span>
+
+        </a>
+
+        <a href="#fee-tracker" class="nav-link" data-page="fee-tracker">
+
+          <span class="nav-icon">◎</span>
+
+          <span>Fee Tracker</span>
+
+        </a>
+
+        <a href="#reports" class="nav-link" data-page="reports">
+
+          <span class="nav-icon">▧</span>
+
+          <span>Reports</span>
+
+        </a>
 
       </nav>
 
@@ -86,23 +142,39 @@
 
         </div>
 
-        <button type="button" class="logout-button" id="logoutButton">↪ &nbsp; Logout</button>
+        <button type="button" class="logout-button" id="logoutButton">
+
+          ↪ &nbsp; Logout
+
+        </button>
 
       </div>
 
     </aside>
 
+    <!-- MAIN CONTENT -->
+
     <main class="main-content">
+
+      <!-- TOPBAR -->
 
       <header class="topbar">
 
         <div class="topbar-left">
 
-          <button type="button" class="mobile-menu-button" id="mobileMenuButton">☰</button>
+          <button type="button" class="mobile-menu-button" id="mobileMenuButton">
+
+            ☰
+
+          </button>
 
           <div>
 
-            <p class="eyebrow">WORKSPACE / <span id="breadcrumb">OVERVIEW</span></p>
+            <p class="eyebrow">
+
+              WORKSPACE / <span id="breadcrumb">OVERVIEW</span>
+
+            </p>
 
             <h1 id="pageTitle">Dashboard Overview</h1>
 
@@ -114,13 +186,23 @@
 
           <div class="avatar">A</div>
 
-          <div class="user-info"><strong>Administrator</strong><small>Personal Workspace</small></div>
+          <div class="user-info">
+
+            <strong>Administrator</strong>
+
+            <small>Personal Workspace</small>
+
+          </div>
 
         </div>
 
       </header>
 
-      <!-- DASHBOARD -->
+      <!-- =====================================
+
+           DASHBOARD
+
+      ====================================== -->
 
       <section class="page-section active" id="page-dashboard">
 
@@ -132,9 +214,23 @@
 
             <h2>Find Your Next Opportunity!</h2>
 
-            <p>Discover potential clients, build connections, and turn opportunities into successful projects.</p>
+            <p>
 
-            <a href="#client-finder" class="primary-button banner-button" data-go="client-finder">Start Finding Clients →</a>
+              Discover potential clients, build connections,
+
+              and turn opportunities into successful projects.
+
+            </p>
+
+            <a href="#client-finder"
+
+               class="primary-button banner-button"
+
+               data-go="client-finder">
+
+              Start Finding Clients →
+
+            </a>
 
           </div>
 
@@ -148,7 +244,13 @@
 
         <div class="section-heading">
 
-          <div><h2>Business Overview</h2><p>Ringkasan aktivitas akuisisi klien.</p></div>
+          <div>
+
+            <h2>Business Overview</h2>
+
+            <p>Ringkasan aktivitas akuisisi klien.</p>
+
+          </div>
 
           <span class="date-chip" id="todayLabel">Hari ini</span>
 
@@ -156,13 +258,69 @@
 
         <div class="stats-grid">
 
-          <article class="stat-card"><div class="stat-top"><span>Total Leads</span><span class="stat-icon lavender">▤</span></div><strong id="totalLeads">0</strong><small>Seluruh calon klien tersimpan</small></article>
+          <article class="stat-card">
 
-          <article class="stat-card"><div class="stat-top"><span>Active Prospects</span><span class="stat-icon pink">✦</span></div><strong id="activeLeads">0</strong><small>Lead yang masih ditindaklanjuti</small></article>
+            <div class="stat-top">
 
-          <article class="stat-card"><div class="stat-top"><span>Successful PO</span><span class="stat-icon blue">↗</span></div><strong id="poCount">0</strong><small>Proyek berhasil</small></article>
+              <span>Total Leads</span>
 
-          <article class="stat-card"><div class="stat-top"><span>Total Fee</span><span class="stat-icon green">◎</span></div><strong id="totalFee">Rp0</strong><small>Fee yang sudah tercatat dibayar</small></article>
+              <span class="stat-icon lavender">▤</span>
+
+            </div>
+
+            <strong id="totalLeads">0</strong>
+
+            <small>Seluruh calon klien tersimpan</small>
+
+          </article>
+
+          <article class="stat-card">
+
+            <div class="stat-top">
+
+              <span>Active Prospects</span>
+
+              <span class="stat-icon pink">✦</span>
+
+            </div>
+
+            <strong id="activeLeads">0</strong>
+
+            <small>Lead yang masih ditindaklanjuti</small>
+
+          </article>
+
+          <article class="stat-card">
+
+            <div class="stat-top">
+
+              <span>Successful PO</span>
+
+              <span class="stat-icon blue">↗</span>
+
+            </div>
+
+            <strong id="poCount">0</strong>
+
+            <small>Proyek berhasil</small>
+
+          </article>
+
+          <article class="stat-card">
+
+            <div class="stat-top">
+
+              <span>Total Fee</span>
+
+              <span class="stat-icon green">◎</span>
+
+            </div>
+
+            <strong id="totalFee">Rp0</strong>
+
+            <small>Fee yang sudah tercatat dibayar</small>
+
+          </article>
 
         </div>
 
@@ -170,17 +328,55 @@
 
           <article class="panel">
 
-            <div class="panel-heading"><div><h3>Recent Leads</h3><p>Calon klien yang terakhir ditambahkan.</p></div><a href="#lead-database" data-go="lead-database">Lihat semua →</a></div>
+            <div class="panel-heading">
 
-            <div id="recentLeads" class="empty-state"><span>▤</span><strong>Belum ada data calon klien</strong><p>Mulai tambahkan calon klien melalui Client Finder.</p></div>
+              <div>
+
+                <h3>Recent Leads</h3>
+
+                <p>Calon klien yang terakhir ditambahkan.</p>
+
+              </div>
+
+              <a href="#lead-database" data-go="lead-database">
+
+                Lihat semua →
+
+              </a>
+
+            </div>
+
+            <div id="recentLeads" class="empty-state">
+
+              <span>▤</span>
+
+              <strong>Belum ada data calon klien</strong>
+
+              <p>Mulai tambahkan calon klien melalui Client Finder.</p>
+
+            </div>
 
           </article>
 
           <article class="panel">
 
-            <div class="panel-heading"><div><h3>Pipeline Progress</h3><p>Status tindak lanjut lead.</p></div></div>
+            <div class="panel-heading">
 
-            <div id="pipelineSummary" class="pipeline-list"><p class="muted">Memuat ringkasan...</p></div>
+              <div>
+
+                <h3>Pipeline Progress</h3>
+
+                <p>Status tindak lanjut lead.</p>
+
+              </div>
+
+            </div>
+
+            <div id="pipelineSummary" class="pipeline-list">
+
+              <p class="muted">Memuat ringkasan...</p>
+
+            </div>
 
           </article>
 
@@ -188,13 +384,31 @@
 
       </section>
 
-      <!-- CLIENT FINDER -->
+      <!-- =====================================
+
+           CLIENT FINDER
+
+      ====================================== -->
 
       <section class="page-section" id="page-client-finder">
 
         <div class="page-intro">
 
-          <div><span class="eyebrow">DISCOVERY TOOLS</span><h2>Client Finder</h2><p>Temukan organisasi yang berpotensi membutuhkan pengadaan barang atau jasa.</p></div>
+          <div>
+
+            <span class="eyebrow">DISCOVERY TOOLS</span>
+
+            <h2>Client Finder</h2>
+
+            <p>
+
+              Temukan organisasi yang berpotensi membutuhkan
+
+              pengadaan barang atau jasa.
+
+            </p>
+
+          </div>
 
           <span class="soft-pill">LEAD DISCOVERY</span>
 
@@ -204,13 +418,45 @@
 
           <article class="panel finder-panel">
 
-            <div class="panel-heading"><div><h3>Search Potential Clients</h3><p>Cari referensi calon klien melalui pencarian web.</p></div><span class="panel-icon">⌕</span></div>
+            <div class="panel-heading">
+
+              <div>
+
+                <h3>Search Potential Clients</h3>
+
+                <p>Cari referensi calon klien melalui pencarian web.</p>
+
+              </div>
+
+              <span class="panel-icon">⌕</span>
+
+            </div>
 
             <form id="webSearchForm" class="search-form">
 
               <label for="webSearchInput">Kata kunci pencarian</label>
 
-              <div class="search-row"><input id="webSearchInput" type="search" placeholder="Contoh: pengadaan komputer Bandung" required><button class="primary-button" type="submit">Cari di Web ↗</button></div>
+              <div class="search-row">
+
+                <input
+
+                  id="webSearchInput"
+
+                  type="search"
+
+                  placeholder="Contoh: pengadaan komputer Bandung"
+
+                  required
+
+                >
+
+                <button class="primary-button" type="submit">
+
+                  Cari di Web ↗
+
+                </button>
+
+              </div>
 
             </form>
 
@@ -218,21 +464,59 @@
 
               <span>Pencarian cepat:</span>
 
-              <button type="button" data-query="pengadaan barang perusahaan Bandung">Perusahaan</button>
+              <button type="button" data-query="pengadaan barang perusahaan Bandung">
 
-              <button type="button" data-query="pengadaan barang instansi pemerintah">Instansi</button>
+                Perusahaan
 
-              <button type="button" data-query="kebutuhan jasa konstruksi perusahaan">Konstruksi</button>
+              </button>
+
+              <button type="button" data-query="pengadaan barang instansi pemerintah">
+
+                Instansi
+
+              </button>
+
+              <button type="button" data-query="kebutuhan jasa konstruksi perusahaan">
+
+                Konstruksi
+
+              </button>
 
             </div>
 
-            <div class="notice-box"><span>ⓘ</span><p>Pencarian membuka hasil Google di tab baru. Periksa sumber dan informasi kontak secara manual sebelum menyimpan lead. Pencarian otomatis dan scraping belum diaktifkan.</p></div>
+            <div class="notice-box">
+
+              <span>ⓘ</span>
+
+              <p>
+
+                Pencarian membuka hasil Google di tab baru.
+
+                Periksa sumber dan informasi kontak secara manual
+
+                sebelum menyimpan lead. Pencarian otomatis dan
+
+                scraping belum diaktifkan.
+
+              </p>
+
+            </div>
 
           </article>
 
           <article class="panel">
 
-            <div class="panel-heading"><div><h3>Lead Qualification</h3><p>Checklist sebelum menghubungi calon klien.</p></div></div>
+            <div class="panel-heading">
+
+              <div>
+
+                <h3>Lead Qualification</h3>
+
+                <p>Checklist sebelum menghubungi calon klien.</p>
+
+              </div>
+
+            </div>
 
             <ul class="qualification-list">
 
@@ -250,7 +534,17 @@
 
         </div>
 
-        <div class="section-heading form-heading"><div><h2>Simpan Calon Klien</h2><p>Masukkan informasi yang ditemukan ke database pribadi.</p></div></div>
+        <div class="section-heading form-heading">
+
+          <div>
+
+            <h2>Simpan Calon Klien</h2>
+
+            <p>Masukkan informasi yang ditemukan ke database pribadi.</p>
+
+          </div>
+
+        </div>
 
         <article class="panel">
 
@@ -258,49 +552,253 @@
 
             <div class="form-grid">
 
-              <div class="field full"><label for="companyName">Nama perusahaan / instansi *</label><input id="companyName" name="company_name" placeholder="Contoh: PT Maju Bersama" required></div>
+              <div class="field full">
 
-              <div class="field"><label for="picName">Nama PIC</label><input id="picName" name="pic_name" placeholder="Nama kontak jika tersedia"></div>
+                <label for="companyName">Nama perusahaan / instansi *</label>
 
-              <div class="field"><label for="businessCategory">Kategori usaha</label>
+                <input
+
+                  id="companyName"
+
+                  name="company_name"
+
+                  placeholder="Contoh: PT Maju Bersama"
+
+                  required
+
+                >
+
+              </div>
+
+              <div class="field">
+
+                <label for="picName">Nama PIC</label>
+
+                <input
+
+                  id="picName"
+
+                  name="pic_name"
+
+                  placeholder="Nama kontak jika tersedia"
+
+                >
+
+              </div>
+
+              <div class="field">
+
+                <label for="businessCategory">Kategori usaha</label>
 
                 <select id="businessCategory" name="business_category">
 
-                  <option value="">Pilih kategori</option><option>Instansi Pemerintah</option><option>Perusahaan Swasta</option><option>Pendidikan</option><option>Kesehatan</option><option>Konstruksi</option><option>Manufaktur</option><option>Perdagangan</option><option>Teknologi &amp; IT</option><option>Lainnya</option>
+                  <option value="">Pilih kategori</option>
+
+                  <option>Instansi Pemerintah</option>
+
+                  <option>Perusahaan Swasta</option>
+
+                  <option>Pendidikan</option>
+
+                  <option>Kesehatan</option>
+
+                  <option>Konstruksi</option>
+
+                  <option>Manufaktur</option>
+
+                  <option>Perdagangan</option>
+
+                  <option>Teknologi &amp; IT</option>
+
+                  <option>Lainnya</option>
 
                 </select>
 
               </div>
 
-              <div class="field"><label for="phone">Nomor telepon</label><input id="phone" name="phone" type="tel" placeholder="Nomor kontak publik"></div>
+              <div class="field">
 
-              <div class="field"><label for="email">Email</label><input id="email" name="email" type="email" placeholder="Email bisnis"></div>
+                <label for="phone">Nomor telepon</label>
 
-              <div class="field"><label for="website">Website</label><input id="website" name="website" type="url" placeholder="https://..."></div>
+                <input
 
-              <div class="field"><label for="city">Kota</label><input id="city" name="city" placeholder="Contoh: Bandung"></div>
+                  id="phone"
 
-              <div class="field full"><label for="address">Alamat</label><input id="address" name="address" placeholder="Alamat organisasi (opsional)"></div>
+                  name="phone"
 
-              <div class="field full"><label for="sourceUrl">Link sumber informasi</label><input id="sourceUrl" name="source_url" type="url" placeholder="https://tautan-sumber.com"></div>
+                  type="tel"
 
-              <div class="field"><label for="source">Sumber lead</label>
+                  placeholder="Nomor kontak publik"
 
-                <select id="source" name="source"><option value="Google Search">Google Search</option><option value="Google Maps">Google Maps</option><option value="Website resmi">Website resmi</option><option value="LinkedIn">LinkedIn</option><option value="Portal pengadaan resmi">Portal pengadaan resmi</option><option value="Referensi">Referensi</option><option value="Lainnya">Lainnya</option></select>
-
-              </div>
-
-              <div class="field"><label for="leadStatus">Status awal</label>
-
-                <select id="leadStatus" name="status"><option value="New">New</option><option value="Contacted">Contacted</option><option value="Interested">Interested</option><option value="Need Confirmed">Need Confirmed</option><option value="Referred">Referred</option><option value="Won">Won</option><option value="Lost">Lost</option></select>
+                >
 
               </div>
 
-              <div class="field full"><label for="notes">Catatan / potensi kebutuhan</label><textarea id="notes" name="notes" rows="3" placeholder="Contoh: kemungkinan membutuhkan pengadaan ATK atau perangkat komputer..."></textarea></div>
+              <div class="field">
+
+                <label for="email">Email</label>
+
+                <input
+
+                  id="email"
+
+                  name="email"
+
+                  type="email"
+
+                  placeholder="Email bisnis"
+
+                >
+
+              </div>
+
+              <div class="field">
+
+                <label for="website">Website</label>
+
+                <input
+
+                  id="website"
+
+                  name="website"
+
+                  type="url"
+
+                  placeholder="https://..."
+
+                >
+
+              </div>
+
+              <div class="field">
+
+                <label for="city">Kota</label>
+
+                <input
+
+                  id="city"
+
+                  name="city"
+
+                  placeholder="Contoh: Bandung"
+
+                >
+
+              </div>
+
+              <div class="field full">
+
+                <label for="address">Alamat</label>
+
+                <input
+
+                  id="address"
+
+                  name="address"
+
+                  placeholder="Alamat organisasi (opsional)"
+
+                >
+
+              </div>
+
+              <div class="field full">
+
+                <label for="sourceUrl">Link sumber informasi</label>
+
+                <input
+
+                  id="sourceUrl"
+
+                  name="source_url"
+
+                  type="url"
+
+                  placeholder="https://tautan-sumber.com"
+
+                >
+
+              </div>
+
+              <div class="field">
+
+                <label for="source">Sumber lead</label>
+
+                <select id="source" name="source">
+
+                  <option value="Google Search">Google Search</option>
+
+                  <option value="Google Maps">Google Maps</option>
+
+                  <option value="Website resmi">Website resmi</option>
+
+                  <option value="LinkedIn">LinkedIn</option>
+
+                  <option value="Portal pengadaan resmi">Portal pengadaan resmi</option>
+
+                  <option value="Referensi">Referensi</option>
+
+                  <option value="Lainnya">Lainnya</option>
+
+                </select>
+
+              </div>
+
+              <div class="field">
+
+                <label for="leadStatus">Status awal</label>
+
+                <select id="leadStatus" name="status">
+
+                  <option value="New">New</option>
+
+                  <option value="Contacted">Contacted</option>
+
+                  <option value="Interested">Interested</option>
+
+                  <option value="Need Confirmed">Need Confirmed</option>
+
+                  <option value="Referred">Referred</option>
+
+                  <option value="Won">Won</option>
+
+                  <option value="Lost">Lost</option>
+
+                </select>
+
+              </div>
+
+              <div class="field full">
+
+                <label for="notes">Catatan / potensi kebutuhan</label>
+
+                <textarea
+
+                  id="notes"
+
+                  name="notes"
+
+                  rows="3"
+
+                  placeholder="Contoh: kemungkinan membutuhkan pengadaan ATK atau perangkat komputer..."
+
+                ></textarea>
+
+              </div>
 
             </div>
 
-            <div class="form-actions"><p>* Wajib diisi</p><button class="primary-button" id="saveLeadButton" type="submit">＋ Simpan Calon Klien</button></div>
+            <div class="form-actions">
+
+              <p>* Wajib diisi</p>
+
+              <button class="primary-button" id="saveLeadButton" type="submit">
+
+                ＋ Simpan Calon Klien
+
+              </button>
+
+            </div>
 
           </form>
 
@@ -308,119 +806,491 @@
 
       </section>
 
-      <!-- LEAD DATABASE -->
+      <!-- =====================================
+
+           LEAD DATABASE
+
+      ====================================== -->
 
       <section class="page-section" id="page-lead-database">
 
-        <div class="page-intro"><div><span class="eyebrow">YOUR CONTACT PIPELINE</span><h2>Lead Database</h2><p>Kelola dan pantau seluruh calon klien yang sudah disimpan.</p></div><button class="primary-button" type="button" data-go="client-finder">＋ Tambah Lead</button></div>
+        <div class="page-intro">
+
+          <div>
+
+            <span class="eyebrow">YOUR CONTACT PIPELINE</span>
+
+            <h2>Lead Database</h2>
+
+            <p>Kelola dan pantau seluruh calon klien yang sudah disimpan.</p>
+
+          </div>
+
+          <button class="primary-button" type="button" data-go="client-finder">
+
+            ＋ Tambah Lead
+
+          </button>
+
+        </div>
 
         <article class="panel">
 
           <div class="database-toolbar">
 
-            <input id="databaseSearch" type="search" placeholder="Cari nama perusahaan atau kota...">
+            <input
 
-            <select id="statusFilter"><option value="">Semua status</option><option value="New">New</option><option value="Contacted">Contacted</option><option value="Interested">Interested</option><option value="Need Confirmed">Need Confirmed</option><option value="Referred">Referred</option><option value="Won">Won</option><option value="Lost">Lost</option></select>
+              id="databaseSearch"
+
+              type="search"
+
+              placeholder="Cari nama perusahaan atau kota..."
+
+            >
+
+            <select id="statusFilter">
+
+              <option value="">Semua status</option>
+
+              <option value="New">New</option>
+
+              <option value="Contacted">Contacted</option>
+
+              <option value="Interested">Interested</option>
+
+              <option value="Need Confirmed">Need Confirmed</option>
+
+              <option value="Referred">Referred</option>
+
+              <option value="Won">Won</option>
+
+              <option value="Lost">Lost</option>
+
+            </select>
 
           </div>
 
-          <div class="table-wrapper"><table class="data-table">
+          <div class="table-wrapper">
 
-            <thead><tr><th>Perusahaan</th><th>Kategori</th><th>Kota</th><th>Kontak</th><th>Status</th><th>Tanggal</th></tr></thead>
+            <table class="data-table">
 
-            <tbody id="leadsTableBody"><tr><td colspan="6" class="empty-cell">Memuat data lead...</td></tr></tbody>
+              <thead>
 
-          </table></div>
+                <tr>
+
+                  <th>Perusahaan</th>
+
+                  <th>Kategori</th>
+
+                  <th>Kota</th>
+
+                  <th>Kontak</th>
+
+                  <th>Status</th>
+
+                  <th>Tanggal</th>
+
+                </tr>
+
+              </thead>
+
+              <tbody id="leadsTableBody">
+
+                <tr>
+
+                  <td colspan="6" class="empty-cell">
+
+                    Memuat data lead...
+
+                  </td>
+
+                </tr>
+
+              </tbody>
+
+            </table>
+
+          </div>
 
         </article>
 
       </section>
 
-      <!-- PROCUREMENT NEEDS -->
+      <!-- =====================================
+
+           PROCUREMENT NEEDS
+
+      ====================================== -->
 
       <section class="page-section" id="page-procurement-needs">
 
         <div class="page-intro">
 
-          <div><span class="eyebrow">BUSINESS OPPORTUNITIES</span><h2>Procurement Needs</h2><p>Catat dan kelola kebutuhan pengadaan dari calon klien.</p></div>
+          <div>
 
-          <button class="primary-button" type="button" id="addNeedButton">＋ Tambah Kebutuhan</button>
+            <span class="eyebrow">BUSINESS OPPORTUNITIES</span>
+
+            <h2>Procurement Needs</h2>
+
+            <p>Catat dan kelola kebutuhan pengadaan dari calon klien.</p>
+
+          </div>
 
         </div>
+
+        <!-- PROCUREMENT STATISTICS -->
 
         <div class="need-stats">
 
-          <article class="stat-card"><div class="stat-top"><span>Total Needs</span><span class="stat-icon lavender">◈</span></div><strong id="needTotal">0</strong><small>Seluruh kebutuhan tercatat</small></article>
+          <article class="stat-card">
 
-          <article class="stat-card"><div class="stat-top"><span>Active Needs</span><span class="stat-icon pink">⌁</span></div><strong id="needActive">0</strong><small>Masih dalam pipeline</small></article>
+            <div class="stat-top">
 
-          <article class="stat-card"><div class="stat-top"><span>Won Opportunities</span><span class="stat-icon green">✓</span></div><strong id="needWon">0</strong><small>Kebutuhan berhasil</small></article>
+              <span>Total Needs</span>
 
-          <article class="stat-card"><div class="stat-top"><span>Total Estimation</span><span class="stat-icon blue">◎</span></div><strong id="needValue">Rp0</strong><small>Total estimasi kebutuhan</small></article>
+              <span class="stat-icon lavender">◈</span>
+
+            </div>
+
+            <strong id="totalNeeds">0</strong>
+
+            <small>Seluruh kebutuhan tercatat</small>
+
+          </article>
+
+          <article class="stat-card">
+
+            <div class="stat-top">
+
+              <span>Active Needs</span>
+
+              <span class="stat-icon pink">⌁</span>
+
+            </div>
+
+            <strong id="activeNeeds">0</strong>
+
+            <small>Masih dalam pipeline</small>
+
+          </article>
+
+          <article class="stat-card">
+
+            <div class="stat-top">
+
+              <span>Won Opportunities</span>
+
+              <span class="stat-icon green">✓</span>
+
+            </div>
+
+            <strong id="wonNeeds">0</strong>
+
+            <small>Kebutuhan berhasil</small>
+
+          </article>
+
+          <article class="stat-card">
+
+            <div class="stat-top">
+
+              <span>Total Estimation</span>
+
+              <span class="stat-icon blue">◎</span>
+
+            </div>
+
+            <strong id="totalNeedValue">Rp0</strong>
+
+            <small>Total estimasi kebutuhan</small>
+
+          </article>
 
         </div>
 
-        <article class="panel need-form-panel" id="needFormPanel">
+        <!-- ADD / EDIT FORM -->
+
+        <article class="panel need-form-panel">
 
           <div class="panel-heading">
 
-            <div><h3 id="needFormTitle">Tambah Procurement Need</h3><p>Catat detail kebutuhan pengadaan calon klien.</p></div>
+            <div>
 
-            <button type="button" class="text-button" id="cancelNeedButton">Tutup ✕</button>
+              <span class="eyebrow">NEW PROCUREMENT RECORD</span>
+
+              <h3 id="needFormTitle">Tambah Procurement Need</h3>
+
+              <p>Catat detail kebutuhan pengadaan calon klien.</p>
+
+            </div>
 
           </div>
 
           <form id="needForm">
 
-            <input type="hidden" id="needId" name="id">
-
             <div class="form-grid">
 
               <div class="field full">
 
-                <label for="needLead">Perusahaan / Instansi</label>
+                <label for="needLeadId">Perusahaan / Instansi</label>
 
-                <select id="needLead" name="lead_id"><option value="">Tidak dikaitkan dengan lead</option></select>
+                <select id="needLeadId" name="lead_id">
 
-                <small class="field-hint">Pilih perusahaan dari Lead Database jika kebutuhan ini berasal dari lead yang sudah tersimpan.</small>
+                  <option value="">-- Tidak dihubungkan ke Lead --</option>
+
+                </select>
+
+                <small class="field-hint">
+
+                  Pilih perusahaan dari Lead Database jika kebutuhan
+
+                  berasal dari lead yang sudah tersimpan.
+
+                </small>
 
               </div>
 
-              <div class="field full"><label for="needTitle">Judul kebutuhan *</label><input id="needTitle" name="need_title" required placeholder="Contoh: Pengadaan Laptop dan Komputer"></div>
+              <div class="field full">
 
-              <div class="field"><label for="needCategory">Kategori</label><input id="needCategory" name="category" placeholder="Contoh: IT, ATK, Konstruksi"></div>
+                <label for="needTitle">Judul kebutuhan *</label>
 
-              <div class="field"><label for="needValueInput">Estimasi nilai proyek (Rp)</label><input id="needValueInput" name="estimated_value" type="number" min="0" step="1000" placeholder="Contoh: 50000000"></div>
+                <input
 
-              <div class="field"><label for="needLocation">Lokasi</label><input id="needLocation" name="location" placeholder="Kota / lokasi pengadaan"></div>
+                  id="needTitle"
 
-              <div class="field"><label for="needUrgency">Urgensi</label><select id="needUrgency" name="urgency"><option value="Low">Low</option><option value="Normal" selected>Normal</option><option value="High">High</option><option value="Urgent">Urgent</option></select></div>
+                  name="need_title"
 
-              <div class="field"><label for="needTargetDate">Target tanggal</label><input id="needTargetDate" name="target_date" type="date"></div>
+                  required
 
-              <div class="field"><label for="needStatus">Status kebutuhan</label><select id="needStatus" name="status"><option>Identified</option><option>Qualified</option><option>Referred</option><option>In Progress</option><option>Won</option><option>Lost</option></select></div>
+                  placeholder="Contoh: Pengadaan Laptop dan Komputer"
 
-              <div class="field full"><label for="needDescription">Deskripsi kebutuhan</label><textarea id="needDescription" name="description" rows="4" placeholder="Detail barang/jasa, spesifikasi, jumlah, atau informasi lain..."></textarea></div>
+                >
+
+              </div>
+
+              <div class="field">
+
+                <label for="needCategory">Kategori</label>
+
+                <input
+
+                  id="needCategory"
+
+                  name="category"
+
+                  placeholder="Contoh: IT, ATK, Konstruksi"
+
+                >
+
+              </div>
+
+              <div class="field">
+
+                <label for="needValue">Estimasi nilai proyek (Rp)</label>
+
+                <input
+
+                  id="needValue"
+
+                  name="estimated_value"
+
+                  type="number"
+
+                  min="0"
+
+                  step="1000"
+
+                  placeholder="Contoh: 50000000"
+
+                >
+
+              </div>
+
+              <div class="field">
+
+                <label for="needLocation">Lokasi</label>
+
+                <input
+
+                  id="needLocation"
+
+                  name="location"
+
+                  placeholder="Kota / lokasi pengadaan"
+
+                >
+
+              </div>
+
+              <div class="field">
+
+                <label for="needUrgency">Urgensi</label>
+
+                <select id="needUrgency" name="urgency">
+
+                  <option value="Low">Low</option>
+
+                  <option value="Normal" selected>Normal</option>
+
+                  <option value="High">High</option>
+
+                  <option value="Urgent">Urgent</option>
+
+                </select>
+
+              </div>
+
+              <div class="field">
+
+                <label for="needTargetDate">Target tanggal</label>
+
+                <input
+
+                  id="needTargetDate"
+
+                  name="target_date"
+
+                  type="date"
+
+                >
+
+              </div>
+
+              <div class="field">
+
+                <label for="needStatus">Status kebutuhan</label>
+
+                <select id="needStatus" name="status">
+
+                  <option value="Identified">Identified</option>
+
+                  <option value="Qualified">Qualified</option>
+
+                  <option value="Referred">Referred</option>
+
+                  <option value="In Progress">In Progress</option>
+
+                  <option value="Won">Won</option>
+
+                  <option value="Lost">Lost</option>
+
+                </select>
+
+              </div>
+
+              <div class="field full">
+
+                <label for="needDescription">Deskripsi kebutuhan</label>
+
+                <textarea
+
+                  id="needDescription"
+
+                  name="description"
+
+                  rows="4"
+
+                  placeholder="Detail barang/jasa, spesifikasi, jumlah, atau informasi lain..."
+
+                ></textarea>
+
+              </div>
 
             </div>
 
-            <div class="form-actions"><p>* Wajib diisi</p><div class="form-action-buttons"><button type="button" class="secondary-button" id="resetNeedButton">Reset</button><button type="submit" class="primary-button" id="saveNeedButton">Simpan Kebutuhan</button></div></div>
+            <div class="form-actions">
+
+              <p>* Wajib diisi</p>
+
+              <div class="form-action-buttons">
+
+                <button
+
+                  type="button"
+
+                  class="secondary-button"
+
+                  id="cancelNeedEdit"
+
+                  hidden
+
+                >
+
+                  Batal Edit
+
+                </button>
+
+                <button
+
+                  type="submit"
+
+                  class="primary-button"
+
+                  id="saveNeedButton"
+
+                >
+
+                  ＋ Simpan Procurement Need
+
+                </button>
+
+              </div>
+
+            </div>
 
           </form>
 
         </article>
 
+        <!-- PROCUREMENT DATABASE -->
+
         <article class="panel">
 
-          <div class="panel-heading"><div><h3>Procurement Needs Database</h3><p>Seluruh kebutuhan pengadaan yang sudah dicatat.</p></div><span class="soft-pill">LIVE DATABASE</span></div>
+          <div class="panel-heading">
+
+            <div>
+
+              <span class="eyebrow">PROCUREMENT DATABASE</span>
+
+              <h3>Procurement Needs Database</h3>
+
+              <p>Seluruh kebutuhan pengadaan yang sudah dicatat.</p>
+
+            </div>
+
+            <span class="soft-pill">LIVE DATABASE</span>
+
+          </div>
 
           <div class="database-toolbar">
 
-            <input type="search" id="needSearch" placeholder="Cari judul, perusahaan, kategori, lokasi...">
+            <input
 
-            <select id="needStatusFilter"><option value="">Semua status</option><option>Identified</option><option>Qualified</option><option>Referred</option><option>In Progress</option><option>Won</option><option>Lost</option></select>
+              type="search"
 
-            <select id="needUrgencyFilter"><option value="">Semua urgensi</option><option>Low</option><option>Normal</option><option>High</option><option>Urgent</option></select>
+              id="needsSearch"
+
+              placeholder="Cari judul, perusahaan, kategori, lokasi..."
+
+            >
+
+            <select id="needsStatusFilter">
+
+              <option value="">Semua status</option>
+
+              <option value="Identified">Identified</option>
+
+              <option value="Qualified">Qualified</option>
+
+              <option value="Referred">Referred</option>
+
+              <option value="In Progress">In Progress</option>
+
+              <option value="Won">Won</option>
+
+              <option value="Lost">Lost</option>
+
+            </select>
 
           </div>
 
@@ -428,55 +1298,223 @@
 
             <table class="data-table needs-table">
 
-              <thead><tr><th>Kebutuhan</th><th>Perusahaan</th><th>Estimasi</th><th>Urgensi</th><th>Target</th><th>Status</th><th>Aksi</th></tr></thead>
+              <thead>
 
-              <tbody id="needsTableBody"><tr><td colspan="7" class="empty-cell">Memuat data procurement needs...</td></tr></tbody>
+                <tr>
+
+                  <th>Kebutuhan</th>
+
+                  <th>Kategori</th>
+
+                  <th>Lead / Klien</th>
+
+                  <th>Lokasi</th>
+
+                  <th>Estimasi Nilai</th>
+
+                  <th>Status</th>
+
+                  <th>Target Date</th>
+
+                  <th>Aksi</th>
+
+                </tr>
+
+              </thead>
+
+              <tbody id="needsTableBody">
+
+                <tr>
+
+                  <td colspan="8" class="empty-cell">
+
+                    Memuat data Procurement Needs...
+
+                  </td>
+
+                </tr>
+
+              </tbody>
 
             </table>
 
           </div>
 
-          <div class="table-footnote" id="needResultCount">0 kebutuhan</div>
+        </article>
+
+      </section>
+
+      <!-- =====================================
+
+           PARTNER MANAGEMENT
+
+      ====================================== -->
+
+      <section class="page-section" id="page-partner-management">
+
+        <div class="page-intro">
+
+          <div>
+
+            <span class="eyebrow">NETWORK MANAGEMENT</span>
+
+            <h2>Partner Management</h2>
+
+            <p>Kelola jaringan partner dan pembagian prospek.</p>
+
+          </div>
+
+        </div>
+
+        <article class="panel placeholder-panel">
+
+          <span>♧</span>
+
+          <h3>Partner Management</h3>
+
+          <p>
+
+            Modul pengelolaan partner akan dikembangkan
+
+            pada tahap berikutnya.
+
+          </p>
 
         </article>
 
       </section>
 
-      <!-- OTHER MODULES -->
+      <!-- =====================================
 
-      <section class="page-section" id="page-partner-management">
+           DEAL & PO
 
-        <div class="page-intro"><div><span class="eyebrow">NETWORK MANAGEMENT</span><h2>Partner Management</h2><p>Kelola jaringan partner dan pembagian prospek.</p></div></div>
-
-        <article class="panel placeholder-panel"><span>♧</span><h3>Partner Management</h3><p>Modul pengelolaan partner akan dikembangkan pada tahap berikutnya.</p></article>
-
-      </section>
+      ====================================== -->
 
       <section class="page-section" id="page-deal-po">
 
-        <div class="page-intro"><div><span class="eyebrow">PROJECT TRACKING</span><h2>Deal &amp; PO</h2><p>Pantau perkembangan referral hingga proyek berhasil.</p></div></div>
+        <div class="page-intro">
 
-        <article class="panel placeholder-panel"><span>⇄</span><h3>Deal &amp; PO Tracking</h3><p>Modul pemantauan deal dan purchase order akan dikembangkan pada tahap berikutnya.</p></article>
+          <div>
+
+            <span class="eyebrow">PROJECT TRACKING</span>
+
+            <h2>Deal &amp; PO</h2>
+
+            <p>Pantau perkembangan referral hingga proyek berhasil.</p>
+
+          </div>
+
+        </div>
+
+        <article class="panel placeholder-panel">
+
+          <span>⇄</span>
+
+          <h3>Deal &amp; PO Tracking</h3>
+
+          <p>
+
+            Modul pemantauan deal dan purchase order
+
+            akan dikembangkan pada tahap berikutnya.
+
+          </p>
+
+        </article>
 
       </section>
+
+      <!-- =====================================
+
+           FEE TRACKER
+
+      ====================================== -->
 
       <section class="page-section" id="page-fee-tracker">
 
-        <div class="page-intro"><div><span class="eyebrow">REVENUE MANAGEMENT</span><h2>Fee Tracker</h2><p>Pantau kesepakatan dan pembayaran fee referral.</p></div></div>
+        <div class="page-intro">
 
-        <article class="panel placeholder-panel"><span>◎</span><h3>Fee Tracker</h3><p>Modul pencatatan fee akan dikembangkan pada tahap berikutnya.</p></article>
+          <div>
+
+            <span class="eyebrow">REVENUE MANAGEMENT</span>
+
+            <h2>Fee Tracker</h2>
+
+            <p>Pantau kesepakatan dan pembayaran fee referral.</p>
+
+          </div>
+
+        </div>
+
+        <article class="panel placeholder-panel">
+
+          <span>◎</span>
+
+          <h3>Fee Tracker</h3>
+
+          <p>
+
+            Modul pencatatan fee akan dikembangkan
+
+            pada tahap berikutnya.
+
+          </p>
+
+        </article>
 
       </section>
+
+      <!-- =====================================
+
+           REPORTS
+
+      ====================================== -->
 
       <section class="page-section" id="page-reports">
 
-        <div class="page-intro"><div><span class="eyebrow">BUSINESS ANALYTICS</span><h2>Reports</h2><p>Lihat perkembangan aktivitas akuisisi klien.</p></div></div>
+        <div class="page-intro">
 
-        <article class="panel placeholder-panel"><span>▧</span><h3>Reports &amp; Analytics</h3><p>Modul laporan dan analisis akan dikembangkan pada tahap berikutnya.</p></article>
+          <div>
+
+            <span class="eyebrow">BUSINESS ANALYTICS</span>
+
+            <h2>Reports</h2>
+
+            <p>Lihat perkembangan aktivitas akuisisi klien.</p>
+
+          </div>
+
+        </div>
+
+        <article class="panel placeholder-panel">
+
+          <span>▧</span>
+
+          <h3>Reports &amp; Analytics</h3>
+
+          <p>
+
+            Modul laporan dan analisis akan dikembangkan
+
+            pada tahap berikutnya.
+
+          </p>
+
+        </article>
 
       </section>
 
-      <footer class="app-footer"><strong>PROCURE FINDER</strong><span>Find Opportunities. Build Connections.</span><span>© 2026</span></footer>
+      <!-- FOOTER -->
+
+      <footer class="app-footer">
+
+        <strong>PROCURE FINDER</strong>
+
+        <span>Find Opportunities. Build Connections.</span>
+
+        <span>© 2026</span>
+
+      </footer>
 
     </main>
 
