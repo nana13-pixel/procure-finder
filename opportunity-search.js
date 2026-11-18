@@ -182,8 +182,10 @@ if (form && input) {
       const data = await response.json();
 
       if (!response.ok || !data.success) {
-        throw new Error(data.message || "Pencarian gagal.");
-      }
+  throw new Error(
+    `${data.message || "Pencarian gagal."} | Status: ${data.auth_status || response.status} | Detail: ${data.detail || "Tidak ada detail"}`
+  );
+}
 
       searchResults = data.results || [];
 
