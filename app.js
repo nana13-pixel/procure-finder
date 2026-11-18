@@ -34,7 +34,53 @@ const leadsTableBody = document.getElementById("leadsTableBody");
 const databaseSearch = document.getElementById("databaseSearch");
 const statusFilter = document.getElementById("statusFilter");
 
+/* Procurement Needs elements */
+
+const needForm = document.getElementById("needForm");
+const saveNeedButton = document.getElementById("saveNeedButton");
+const needsTableBody = document.getElementById("needsTableBody");
+const needsSearch = document.getElementById("needsSearch");
+const needsStatusFilter = document.getElementById("needsStatusFilter");
+const needLeadSelect = document.getElementById("needLeadId");
+
+const totalNeedsElement = document.getElementById("totalNeeds");
+const activeNeedsElement = document.getElementById("activeNeeds");
+const wonNeedsElement = document.getElementById("wonNeeds");
+const totalNeedValueElement = document.getElementById("totalNeedValue");
+
 let allLeads = [];
+let allNeeds = [];
+let editingNeedId = null;
+
+/* =========================================
+   CONSTANTS
+========================================= */
+
+const LEAD_STATUSES = [
+  "New",
+  "Contacted",
+  "Interested",
+  "Need Confirmed",
+  "Referred",
+  "Won",
+  "Lost"
+];
+
+const NEED_STATUSES = [
+  "Identified",
+  "Qualified",
+  "Referred",
+  "In Progress",
+  "Won",
+  "Lost"
+];
+
+const NEED_URGENCIES = [
+  "Low",
+  "Normal",
+  "High",
+  "Urgent"
+];
 
 /* =========================================
    HELPERS
@@ -83,37 +129,26 @@ function formatCurrency(value) {
 }
 
 function getStatusLabel(status) {
-  const labels = {
-    new: "New",
-    contacted: "Contacted",
-    interested: "Interested",
-    need_confirmed: "Need Confirmed",
-    referred: "Referred",
-    quotation: "Quotation",
-    po: "PO",
-    lost: "Lost"
-  };
-
-  return labels[status] || status || "New";
+  return status || "New";
 }
 
 function getStatusClass(status) {
-  const allowed = [
-    "new",
-    "contacted",
-    "interested",
-    "need_confirmed",
-    "referred",
-    "quotation",
-    "po",
-    "lost"
-  ];
+  const normalized = String(status || "")
+    .toLowerCase()
+    .replace(/\s+/g, "-");
 
-  return allowed.includes(status) ? `status-${status}` : "status-badge";
+  return `status-${normalized}`;
 }
 
 function showError(message) {
   alert(message || "Terjadi kesalahan. Silakan coba lagi.");
+}
+
+function setButtonLoading(button, loading, loadingText, normalText) {
+  if (!button) return;
+
+  button.disabled = loading;
+  button.textContent = loading ? loadingText : normalText;
 }
 
 /* =========================================
@@ -134,14 +169,11 @@ async function checkSession() {
     }
 
     showApplication();
-
     return true;
 
   } catch (error) {
     console.error("Session error:", error);
-
     window.location.replace("/login.html");
-
     return false;
   }
 }
@@ -163,7 +195,6 @@ async function logout() {
 
   } catch (error) {
     console.error("Logout error:", error);
-
     showError("Logout gagal: " + error.message);
 
     if (button) {
@@ -201,9 +232,7 @@ function navigateTo(page) {
 
   const selectedPage = document.getElementById(`page-${page}`);
 
-  if (selectedPage) {
-    selectedPage.classList.add("active");
-  }
+  if (selectedPage) selectedPage.classList.add("active");
 
   if (pageTitle) pageTitle.textContent = pageNames[page];
 
@@ -213,13 +242,9 @@ function navigateTo(page) {
 
   document.getElementById("sidebar")?.classList.remove("open");
 
-  if (page === "lead-database") {
-    loadLeads();
-  }
-
-  if (page === "dashboard") {
-    loadDashboard();
-  }
+  if (page === "lead-database") loadLeads();
+  if (page === "dashboard") loadDashboard();
+  if (page === "procurement-needs") loadProcurementNeeds();
 
   window.scrollTo({ top: 0, behavior: "smooth" });
 }
@@ -230,9 +255,7 @@ function setupNavigation() {
       event.preventDefault();
 
       const page = link.dataset.page;
-
       history.replaceState(null, "", `#${page}`);
-
       navigateTo(page);
     });
   });
@@ -242,9 +265,7 @@ function setupNavigation() {
       event.preventDefault();
 
       const page = link.dataset.go;
-
       history.replaceState(null, "", `#${page}`);
-
       navigateTo(page);
     });
   });
@@ -278,8 +299,8 @@ function setupWebSearch() {
       return;
     }
 
-    const searchURL = "https://www.google.com/search?q=" +
-      encodeURIComponent(query);
+    const searchURL =
+      "https://www.google.com/search?q=" + encodeURIComponent(query);
 
     window.open(searchURL, "_blank", "noopener,noreferrer");
   });
@@ -289,14 +310,13 @@ function setupWebSearch() {
       if (!searchInput) return;
 
       searchInput.value = button.dataset.query || "";
-
       searchInput.focus();
     });
   });
 }
 
 /* =========================================
-   SAVE LEAD
+   LEAD FORM
 ========================================= */
 
 function setupLeadForm() {
@@ -318,7 +338,7 @@ function setupLeadForm() {
       business_category: formData.get("business_category") || null,
       source: formData.get("source") || null,
       source_url: formData.get("source_url")?.toString().trim() || null,
-      status: formData.get("status") || "new",
+      status: formData.get("status") || "New",
       notes: formData.get("notes")?.toString().trim() || null
     };
 
@@ -327,8 +347,12 @@ function setupLeadForm() {
       return;
     }
 
-    saveLeadButton.disabled = true;
-    saveLeadButton.textContent = "Menyimpan...";
+    setButtonLoading(
+      saveLeadButton,
+      true,
+      "Menyimpan...",
+      "＋ Simpan Calon Klien"
+    );
 
     try {
       const { error } = await supabase
@@ -356,8 +380,12 @@ function setupLeadForm() {
       );
 
     } finally {
-      saveLeadButton.disabled = false;
-      saveLeadButton.innerHTML = "＋ Simpan Calon Klien";
+      setButtonLoading(
+        saveLeadButton,
+        false,
+        "Menyimpan...",
+        "＋ Simpan Calon Klien"
+      );
     }
   });
 }
@@ -388,7 +416,6 @@ async function loadLeads() {
 
   try {
     allLeads = await fetchLeads();
-
     renderLeadTable();
 
   } catch (error) {
@@ -423,10 +450,8 @@ function renderLeadTable() {
       lead.email
     ].join(" ").toLowerCase();
 
-    const matchesKeyword = searchText.includes(keyword);
-    const matchesStatus = !selectedStatus || lead.status === selectedStatus;
-
-    return matchesKeyword && matchesStatus;
+    return searchText.includes(keyword) &&
+      (!selectedStatus || lead.status === selectedStatus);
   });
 
   if (!filtered.length) {
@@ -442,9 +467,7 @@ function renderLeadTable() {
 
   leadsTableBody.innerHTML = filtered.map(lead => `
     <tr>
-      <td>
-        <strong>${escapeHTML(lead.company_name)}</strong>
-      </td>
+      <td><strong>${escapeHTML(lead.company_name)}</strong></td>
       <td>${escapeHTML(lead.business_category || "-")}</td>
       <td>${escapeHTML(lead.city || "-")}</td>
       <td>${escapeHTML(lead.phone || lead.email || "-")}</td>
@@ -469,12 +492,11 @@ async function loadDashboard() {
     const total = allLeads.length;
 
     const activeStatuses = [
-      "new",
-      "contacted",
-      "interested",
-      "need_confirmed",
-      "referred",
-      "quotation"
+      "New",
+      "Contacted",
+      "Interested",
+      "Need Confirmed",
+      "Referred"
     ];
 
     const active = allLeads.filter(lead =>
@@ -482,20 +504,12 @@ async function loadDashboard() {
     ).length;
 
     const successfulPO = allLeads.filter(lead =>
-      lead.status === "po"
+      lead.status === "Won"
     ).length;
 
-    if (totalLeadsElement) {
-      totalLeadsElement.textContent = total;
-    }
-
-    if (activeLeadsElement) {
-      activeLeadsElement.textContent = active;
-    }
-
-    if (poCountElement) {
-      poCountElement.textContent = successfulPO;
-    }
+    if (totalLeadsElement) totalLeadsElement.textContent = total;
+    if (activeLeadsElement) activeLeadsElement.textContent = active;
+    if (poCountElement) poCountElement.textContent = successfulPO;
 
     renderRecentLeads();
     renderPipeline();
@@ -510,10 +524,6 @@ async function loadDashboard() {
     }
   }
 }
-
-/* =========================================
-   RECENT LEADS
-========================================= */
 
 function renderRecentLeads() {
   if (!recentLeadsElement) return;
@@ -539,34 +549,408 @@ function renderRecentLeads() {
   `).join("");
 }
 
-/* =========================================
-   PIPELINE SUMMARY
-========================================= */
-
 function renderPipeline() {
   if (!pipelineSummaryElement) return;
 
-  const statuses = [
-    ["New", "new"],
-    ["Contacted", "contacted"],
-    ["Interested", "interested"],
-    ["Need Confirmed", "need_confirmed"],
-    ["Referred", "referred"],
-    ["Quotation", "quotation"],
-    ["PO", "po"],
-    ["Lost", "lost"]
-  ];
-
-  pipelineSummaryElement.innerHTML = statuses.map(([label, key]) => {
-    const count = allLeads.filter(lead => lead.status === key).length;
+  pipelineSummaryElement.innerHTML = LEAD_STATUSES.map(status => {
+    const count = allLeads.filter(lead =>
+      lead.status === status
+    ).length;
 
     return `
       <div class="pipeline-row">
-        <span>${label}</span>
+        <span>${escapeHTML(status)}</span>
         <strong>${count}</strong>
       </div>
     `;
   }).join("");
+}
+
+/* =========================================
+   PROCUREMENT NEEDS - LOAD DATA
+========================================= */
+
+async function fetchProcurementNeeds() {
+  const { data, error } = await supabase
+    .from("procurement_needs")
+    .select("*")
+    .order("created_at", { ascending: false });
+
+  if (error) throw error;
+
+  return data || [];
+}
+
+async function loadProcurementNeeds() {
+  if (!needsTableBody) return;
+
+  needsTableBody.innerHTML = `
+    <tr>
+      <td colspan="8" class="empty-cell">
+        Memuat Procurement Needs...
+      </td>
+    </tr>
+  `;
+
+  try {
+    const [needs, leads] = await Promise.all([
+      fetchProcurementNeeds(),
+      fetchLeads()
+    ]);
+
+    allNeeds = needs;
+    allLeads = leads;
+
+    populateNeedLeadOptions();
+    renderProcurementNeeds();
+    renderNeedStats();
+
+  } catch (error) {
+    console.error("Load Procurement Needs error:", error);
+
+    needsTableBody.innerHTML = `
+      <tr>
+        <td colspan="8" class="empty-cell">
+          Gagal memuat data: ${escapeHTML(error.message)}
+        </td>
+      </tr>
+    `;
+  }
+}
+
+/* =========================================
+   PROCUREMENT NEEDS - LEAD OPTIONS
+========================================= */
+
+function populateNeedLeadOptions() {
+  if (!needLeadSelect) return;
+
+  const selectedValue = needLeadSelect.value;
+
+  needLeadSelect.innerHTML = `
+    <option value="">-- Tidak dihubungkan ke Lead --</option>
+    ${allLeads.map(lead => `
+      <option value="${escapeHTML(lead.id)}">
+        ${escapeHTML(lead.company_name)}
+      </option>
+    `).join("")}
+  `;
+
+  if (selectedValue) {
+    needLeadSelect.value = selectedValue;
+  }
+}
+
+/* =========================================
+   PROCUREMENT NEEDS - SAVE
+========================================= */
+
+function setupNeedForm() {
+  if (!needForm) return;
+
+  needForm.addEventListener("submit", async event => {
+    event.preventDefault();
+
+    if (!needForm.reportValidity()) return;
+
+    const formData = new FormData(needForm);
+
+    const need = {
+      lead_id: formData.get("lead_id") || null,
+      need_title: formData.get("need_title")?.toString().trim(),
+      description: formData.get("description")?.toString().trim() || null,
+      category: formData.get("category")?.toString().trim() || null,
+      estimated_value: Number(formData.get("estimated_value")) || 0,
+      location: formData.get("location")?.toString().trim() || null,
+      urgency: formData.get("urgency") || "Normal",
+      target_date: formData.get("target_date") || null,
+      status: formData.get("status") || "Identified"
+    };
+
+    if (!need.need_title) {
+      showError("Judul kebutuhan pengadaan wajib diisi.");
+      return;
+    }
+
+    if (!NEED_STATUSES.includes(need.status)) {
+      showError("Status Procurement Needs tidak valid.");
+      return;
+    }
+
+    if (!NEED_URGENCIES.includes(need.urgency)) {
+      showError("Tingkat urgensi tidak valid.");
+      return;
+    }
+
+    setButtonLoading(
+      saveNeedButton,
+      true,
+      "Menyimpan...",
+      "＋ Simpan Procurement Need"
+    );
+
+    try {
+      let result;
+
+      if (editingNeedId) {
+        result = await supabase
+          .from("procurement_needs")
+          .update(need)
+          .eq("id", editingNeedId);
+      } else {
+        result = await supabase
+          .from("procurement_needs")
+          .insert([need]);
+      }
+
+      if (result.error) throw result.error;
+
+      alert(
+        editingNeedId
+          ? "Procurement Need berhasil diperbarui!"
+          : "Procurement Need berhasil ditambahkan!"
+      );
+
+      resetNeedForm();
+      await loadProcurementNeeds();
+
+    } catch (error) {
+      console.error("Save Procurement Need error:", error);
+
+      showError(
+        "Procurement Need gagal disimpan.\n\n" +
+        error.message +
+        "\n\nPeriksa izin tabel, RLS, dan constraint database."
+      );
+
+    } finally {
+      setButtonLoading(
+        saveNeedButton,
+        false,
+        "Menyimpan...",
+        "＋ Simpan Procurement Need"
+      );
+    }
+  });
+}
+
+/* =========================================
+   PROCUREMENT NEEDS - RESET FORM
+========================================= */
+
+function resetNeedForm() {
+  if (!needForm) return;
+
+  needForm.reset();
+  editingNeedId = null;
+
+  const title = document.getElementById("needFormTitle");
+  if (title) title.textContent = "Tambah Procurement Need";
+
+  if (saveNeedButton) {
+    saveNeedButton.textContent = "＋ Simpan Procurement Need";
+  }
+
+  const cancelButton = document.getElementById("cancelNeedEdit");
+  if (cancelButton) cancelButton.hidden = true;
+}
+
+/* =========================================
+   PROCUREMENT NEEDS - EDIT
+========================================= */
+
+function editProcurementNeed(id) {
+  const need = allNeeds.find(item => item.id === id);
+
+  if (!need || !needForm) return;
+
+  editingNeedId = id;
+
+  needForm.elements.namedItem("lead_id").value = need.lead_id || "";
+  needForm.elements.namedItem("need_title").value = need.need_title || "";
+  needForm.elements.namedItem("category").value = need.category || "";
+  needForm.elements.namedItem("estimated_value").value =
+    need.estimated_value ?? 0;
+  needForm.elements.namedItem("location").value = need.location || "";
+  needForm.elements.namedItem("urgency").value = need.urgency || "Normal";
+  needForm.elements.namedItem("target_date").value = need.target_date || "";
+  needForm.elements.namedItem("status").value = need.status || "Identified";
+  needForm.elements.namedItem("description").value =
+    need.description || "";
+
+  const title = document.getElementById("needFormTitle");
+  if (title) title.textContent = "Edit Procurement Need";
+
+  if (saveNeedButton) {
+    saveNeedButton.textContent = "Simpan Perubahan";
+  }
+
+  const cancelButton = document.getElementById("cancelNeedEdit");
+  if (cancelButton) cancelButton.hidden = false;
+
+  needForm.scrollIntoView({
+    behavior: "smooth",
+    block: "start"
+  });
+}
+
+/* =========================================
+   PROCUREMENT NEEDS - DELETE
+========================================= */
+
+async function deleteProcurementNeed(id) {
+  const confirmed = confirm(
+    "Yakin ingin menghapus Procurement Need ini?"
+  );
+
+  if (!confirmed) return;
+
+  try {
+    const { error } = await supabase
+      .from("procurement_needs")
+      .delete()
+      .eq("id", id);
+
+    if (error) throw error;
+
+    alert("Procurement Need berhasil dihapus!");
+
+    await loadProcurementNeeds();
+
+  } catch (error) {
+    console.error("Delete Procurement Need error:", error);
+    showError("Gagal menghapus data: " + error.message);
+  }
+}
+
+/* =========================================
+   PROCUREMENT NEEDS - RENDER TABLE
+========================================= */
+
+function renderProcurementNeeds() {
+  if (!needsTableBody) return;
+
+  const keyword = needsSearch?.value.trim().toLowerCase() || "";
+  const selectedStatus = needsStatusFilter?.value || "";
+
+  const filtered = allNeeds.filter(need => {
+    const linkedLead = allLeads.find(lead => lead.id === need.lead_id);
+
+    const searchText = [
+      need.need_title,
+      need.category,
+      need.location,
+      need.description,
+      linkedLead?.company_name
+    ].join(" ").toLowerCase();
+
+    return searchText.includes(keyword) &&
+      (!selectedStatus || need.status === selectedStatus);
+  });
+
+  if (!filtered.length) {
+    needsTableBody.innerHTML = `
+      <tr>
+        <td colspan="8" class="empty-cell">
+          Belum ada Procurement Needs yang cocok.
+        </td>
+      </tr>
+    `;
+    return;
+  }
+
+  needsTableBody.innerHTML = filtered.map(need => {
+    const linkedLead = allLeads.find(lead => lead.id === need.lead_id);
+
+    return `
+      <tr>
+        <td>
+          <strong>${escapeHTML(need.need_title)}</strong>
+          <small class="need-description">
+            ${escapeHTML(need.description || "")}
+          </small>
+        </td>
+        <td>${escapeHTML(need.category || "-")}</td>
+        <td>${escapeHTML(linkedLead?.company_name || "-")}</td>
+        <td>${escapeHTML(need.location || "-")}</td>
+        <td>${escapeHTML(formatCurrency(need.estimated_value))}</td>
+        <td>
+          <span class="status-badge ${getStatusClass(need.status)}">
+            ${escapeHTML(need.status || "Identified")}
+          </span>
+        </td>
+        <td>${escapeHTML(formatDate(need.target_date))}</td>
+        <td>
+          <div class="table-actions">
+            <button
+              type="button"
+              class="table-action"
+              data-edit-need="${escapeHTML(need.id)}"
+            >Edit</button>
+            <button
+              type="button"
+              class="table-action delete-action"
+              data-delete-need="${escapeHTML(need.id)}"
+            >Hapus</button>
+          </div>
+        </td>
+      </tr>
+    `;
+  }).join("");
+}
+
+/* =========================================
+   PROCUREMENT NEEDS - STATISTICS
+========================================= */
+
+function renderNeedStats() {
+  const total = allNeeds.length;
+
+  const active = allNeeds.filter(need =>
+    !["Won", "Lost"].includes(need.status)
+  ).length;
+
+  const won = allNeeds.filter(need =>
+    need.status === "Won"
+  ).length;
+
+  const totalValue = allNeeds.reduce((sum, need) => {
+    return sum + (Number(need.estimated_value) || 0);
+  }, 0);
+
+  if (totalNeedsElement) totalNeedsElement.textContent = total;
+  if (activeNeedsElement) activeNeedsElement.textContent = active;
+  if (wonNeedsElement) wonNeedsElement.textContent = won;
+
+  if (totalNeedValueElement) {
+    totalNeedValueElement.textContent = formatCurrency(totalValue);
+  }
+}
+
+/* =========================================
+   PROCUREMENT NEEDS - EVENTS
+========================================= */
+
+function setupNeedEvents() {
+  needsSearch?.addEventListener("input", renderProcurementNeeds);
+  needsStatusFilter?.addEventListener("change", renderProcurementNeeds);
+
+  needsTableBody?.addEventListener("click", event => {
+    const editButton = event.target.closest("[data-edit-need]");
+    const deleteButton = event.target.closest("[data-delete-need]");
+
+    if (editButton) {
+      editProcurementNeed(editButton.dataset.editNeed);
+    }
+
+    if (deleteButton) {
+      deleteProcurementNeed(deleteButton.dataset.deleteNeed);
+    }
+  });
+
+  document.getElementById("cancelNeedEdit")?.addEventListener("click", () => {
+    resetNeedForm();
+  });
 }
 
 /* =========================================
@@ -607,6 +991,8 @@ async function initializeApp() {
   setupWebSearch();
   setupLeadForm();
   setupDatabaseFilters();
+  setupNeedForm();
+  setupNeedEvents();
   setupDate();
 
   await loadDashboard();
